@@ -1,0 +1,503 @@
+[
+  {
+    "name": "CGS Administrators, LLC (MAC - Part A, MAC - Part B)",
+    "count": 8,
+    "highImpact": 0,
+    "entries": [
+      {
+        "recordId": "A60185-v11",
+        "displayId": "A60185",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Superficial Radiation Therapy (SRT) for the Treatment of Nonmelanoma Skin Cancers (NMSC)",
+        "updatedOn": "04/29/2026",
+        "effectiveDate": "03/01/2026",
+        "impact": "medium",
+        "tags": [
+          "general update"
+        ],
+        "summary": "Meaningful policy or coding update detected: Revision Effective: 03/01/2026 Revision Explanation: - Under Coding Guidance : “A qualified physician for this service is one that has training and expertise that must have been acquired within the framework of an acc...",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=60185&ver=11"
+      },
+      {
+        "recordId": "L35249-v20",
+        "displayId": "L35249",
+        "docType": "LCD",
+        "source": "local",
+        "title": "Nerve Blocks for Peripheral Neuropathy",
+        "updatedOn": "04/29/2026",
+        "effectiveDate": "05/07/2026",
+        "impact": "medium",
+        "tags": [
+          "general update"
+        ],
+        "summary": "Meaningful policy or coding update detected: R14 Revision Effective: 05/07/2026 Revision Explanation: Annual review, no changes were made. 04/29/2026: At this time 21st Century Cures Act will apply to new and revised LCDs that restrict coverage which requires co...",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=35249&ver=20"
+      },
+      {
+        "recordId": "L34195-v28",
+        "displayId": "L34195",
+        "docType": "LCD",
+        "source": "local",
+        "title": "Mohs Micrographic Surgery",
+        "updatedOn": "04/29/2026",
+        "effectiveDate": "05/07/2026",
+        "impact": "medium",
+        "tags": [
+          "general update"
+        ],
+        "summary": "Meaningful policy or coding update detected: R21 Revision Effective: 05/07/2026 Revision Explanation: Annual review, no changes. 04/29/2026: At this time 21st Century Cures Act will apply to new and revised LCDs that restrict coverage which requires comment and...",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=34195&ver=28"
+      },
+      {
+        "recordId": "A57068-v17",
+        "displayId": "A57068",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Ocular Photography - External",
+        "updatedOn": "04/29/2026",
+        "effectiveDate": "05/07/2026",
+        "impact": "low",
+        "tags": [
+          "general update"
+        ],
+        "summary": "Lower-urgency correction or cleanup: Revision Effective: 05/07/2026 Revision Explanation: Annual review, no changes were made.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57068&ver=17"
+      },
+      {
+        "recordId": "A57307-v38",
+        "displayId": "A57307",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Nerve Conduction Studies and Electromyography",
+        "updatedOn": "04/29/2026",
+        "effectiveDate": "05/07/2026",
+        "impact": "low",
+        "tags": [
+          "general update"
+        ],
+        "summary": "Lower-urgency correction or cleanup: Revision Effective: 05/07/2026 Revision Explanation: Annual review, no changes.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57307&ver=38"
+      },
+      {
+        "recordId": "A57663-v14",
+        "displayId": "A57663",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Nerve Blocks for Peripheral Neuropathy",
+        "updatedOn": "04/29/2026",
+        "effectiveDate": "05/07/2026",
+        "impact": "low",
+        "tags": [
+          "general update"
+        ],
+        "summary": "Lower-urgency correction or cleanup: Revision Effective: 05/07/2026 Revision Explanation: Annual review, no changes.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57663&ver=14"
+      },
+      {
+        "recordId": "A56836-v18",
+        "displayId": "A56836",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Mohs Micrographic Surgery",
+        "updatedOn": "04/29/2026",
+        "effectiveDate": "05/07/2026",
+        "impact": "low",
+        "tags": [
+          "administrative correction"
+        ],
+        "summary": "Lower-urgency correction or cleanup: Revision Effective: 05/07/2026 Revision Explanation: Annual review, correction to typographical error.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56836&ver=18"
+      },
+      {
+        "recordId": "L35897-v32",
+        "displayId": "L35897",
+        "docType": "LCD",
+        "source": "local",
+        "title": "Nerve Conduction Studies and Electromyography",
+        "updatedOn": "04/29/2026",
+        "effectiveDate": "05/07/2026",
+        "impact": "low",
+        "tags": [
+          "general update"
+        ],
+        "summary": "Lower-urgency correction or cleanup: Revision 22 Revision Effective: 05/07/2026 Revision Explanation: Annual review, no changes were made.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=35897&ver=32"
+      }
+    ]
+  },
+  {
+    "name": "National coverage",
+    "count": 8,
+    "highImpact": 0,
+    "entries": [
+      {
+        "recordId": "240.9-v1",
+        "displayId": "240.9",
+        "docType": "NCD",
+        "source": "national",
+        "title": "Noninvasive Positive Pressure Ventilation (NIPPV) in the Home for the Treatment of Chronic Respiratory Failure (CRF) Consequent to Chronic Obstructive Pulmonary Disease (COPD)",
+        "updatedOn": "04/30/2026",
+        "impact": "medium",
+        "tags": [
+          "operations",
+          "coding notice"
+        ],
+        "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=380&ncdver=1"
+      },
+      {
+        "recordId": "220.6.17-v4",
+        "displayId": "220.6.17",
+        "docType": "NCD",
+        "source": "national",
+        "title": "Positron Emission Tomography (FDG) for Oncologic Conditions",
+        "updatedOn": "04/30/2026",
+        "impact": "medium",
+        "tags": [
+          "operations",
+          "coding notice"
+        ],
+        "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=331&ncdver=4"
+      },
+      {
+        "recordId": "160.18-v3",
+        "displayId": "160.18",
+        "docType": "NCD",
+        "source": "national",
+        "title": "Vagus Nerve Stimulation (VNS)",
+        "updatedOn": "04/30/2026",
+        "impact": "medium",
+        "tags": [
+          "operations",
+          "coding notice"
+        ],
+        "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=230&ncdver=3"
+      },
+      {
+        "recordId": "110.18-v2",
+        "displayId": "110.18",
+        "docType": "NCD",
+        "source": "national",
+        "title": "Aprepitant for Chemotherapy-Induced Emesis",
+        "updatedOn": "04/30/2026",
+        "impact": "medium",
+        "tags": [
+          "operations",
+          "coding notice"
+        ],
+        "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=309&ncdver=2"
+      },
+      {
+        "recordId": "90.2-v2",
+        "displayId": "90.2",
+        "docType": "NCD",
+        "source": "national",
+        "title": "Next Generation Sequencing (NGS)",
+        "updatedOn": "04/30/2026",
+        "impact": "medium",
+        "tags": [
+          "operations",
+          "coding notice"
+        ],
+        "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=372&ncdver=2"
+      },
+      {
+        "recordId": "150.13-v2",
+        "displayId": "150.13",
+        "docType": "NCD",
+        "source": "national",
+        "title": "Percutaneous Image-Guided Lumbar Decompression for Lumbar Spinal Stenosis",
+        "updatedOn": "04/30/2026",
+        "impact": "medium",
+        "tags": [
+          "operations",
+          "coding notice"
+        ],
+        "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=358&ncdver=2"
+      },
+      {
+        "recordId": "210.10-v1",
+        "displayId": "210.10",
+        "docType": "NCD",
+        "source": "national",
+        "title": "Screening for Sexually Transmitted Infections (STIs) and High-Intensity Behavioral Counseling (HIBC) to Prevent STIs",
+        "updatedOn": "04/30/2026",
+        "impact": "medium",
+        "tags": [
+          "operations",
+          "coding notice"
+        ],
+        "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=352&ncdver=1"
+      },
+      {
+        "recordId": "110.17-v2",
+        "displayId": "110.17",
+        "docType": "NCD",
+        "source": "national",
+        "title": "Anti-Cancer Chemotherapy for Colorectal Cancer - RETIRED",
+        "updatedOn": "04/23/2026",
+        "impact": "low",
+        "tags": [
+          "general update"
+        ],
+        "summary": "Effective 2/25/2026, this section of the NCD Manual is removed.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=291&ncdver=2"
+      }
+    ]
+  },
+  {
+    "name": "Noridian Healthcare Solutions, LLC (MAC - Part A, MAC - Part B)",
+    "count": 4,
+    "highImpact": 1,
+    "entries": [
+      {
+        "recordId": "A55001-v69",
+        "displayId": "A55001",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Urine Drug Testing",
+        "updatedOn": "04/30/2026",
+        "effectiveDate": "06/01/2026",
+        "impact": "high",
+        "tags": [
+          "coding",
+          "effective date"
+        ],
+        "summary": "High-signal revision from CMS notes: Revision Effective Date: 06/01/2026 Under ICD-10-CM Codes That Support Medical Necessity: Added: F11.120, F12.10, F12.20, F12.21, F13.10, F13.20, F13.21, F14.10, F14.120, F14.20, F14.21, F15.10, F15.20, F15.21, F19.10...",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=55001&ver=69"
+      },
+      {
+        "recordId": "L40255-v6",
+        "displayId": "L40255",
+        "docType": "LCD",
+        "source": "local",
+        "title": "Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices",
+        "updatedOn": "04/29/2026",
+        "effectiveDate": "06/21/2026",
+        "impact": "low",
+        "tags": [
+          "general update"
+        ],
+        "summary": "Lower-urgency correction or cleanup: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=40255&ver=6"
+      },
+      {
+        "recordId": "A60428-v3",
+        "displayId": "A60428",
+        "docType": "Article",
+        "source": "local",
+        "title": "Response to Comments: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices",
+        "updatedOn": "04/29/2026",
+        "effectiveDate": "06/21/2026",
+        "impact": "low",
+        "tags": [
+          "general update"
+        ],
+        "summary": "Lower-urgency correction or cleanup: Response to Comments: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=60428&ver=3"
+      },
+      {
+        "recordId": "A60279-v4",
+        "displayId": "A60279",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices",
+        "updatedOn": "04/29/2026",
+        "effectiveDate": "06/21/2026",
+        "impact": "low",
+        "tags": [
+          "general update"
+        ],
+        "summary": "Lower-urgency correction or cleanup: Billing and Coding: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=60279&ver=4"
+      }
+    ]
+  },
+  {
+    "name": "Palmetto GBA (MAC - Part A, MAC - Part B)",
+    "count": 4,
+    "highImpact": 4,
+    "entries": [
+      {
+        "recordId": "A54767-v71",
+        "displayId": "A54767",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Medicare Preventive Coverage for Certain Vaccines",
+        "updatedOn": "05/01/2026",
+        "effectiveDate": "04/20/2026",
+        "impact": "high",
+        "tags": [
+          "coding",
+          "effective date"
+        ],
+        "summary": "High-signal revision from CMS notes: Under CMS National Coverage Policy added the following regulation: CMS Internet-Only Manual, Pub. 100-02, Medicare Benefit Policy Manual , Chapter 15, §50.4.4.2 Immunizations. Under Article Text formatting changes wer...",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=54767&ver=71"
+      },
+      {
+        "recordId": "A54799-v67",
+        "displayId": "A54799",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Urine Drug Testing",
+        "updatedOn": "05/01/2026",
+        "effectiveDate": "06/01/2026",
+        "impact": "high",
+        "tags": [
+          "coding"
+        ],
+        "summary": "High-signal revision from CMS notes: Under ICD-10-CM Codes that Support Medical Necessity Group 1: Codes added F11.120, F12.10, F12.20, F12.21, F13.10, F13.20, F13.21, F14.10, F14.120, F14.20, F14.21, F15.10, F15.20, F15.21, F19.10 and F19.21.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=54799&ver=67"
+      },
+      {
+        "recordId": "A59350-v27",
+        "displayId": "A59350",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Radiation Therapies",
+        "updatedOn": "04/28/2026",
+        "effectiveDate": "04/01/2026",
+        "impact": "high",
+        "tags": [
+          "effective date"
+        ],
+        "summary": "High-signal revision from CMS notes: The effective date for revision 9 should be retroactive effective for dates of service on or after 1/1/26 not 4/1/26.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=59350&ver=27"
+      },
+      {
+        "recordId": "A53066-v97",
+        "displayId": "A53066",
+        "docType": "Article",
+        "source": "local",
+        "title": "Self-Administered Drug Exclusion List:",
+        "updatedOn": "04/27/2026",
+        "effectiveDate": "06/01/2026",
+        "impact": "high",
+        "tags": [
+          "coding"
+        ],
+        "summary": "High-signal revision from CMS notes: Under Excluded CPT/HCPCS Codes – Table Format added C9399, J3490, J3590 for Nemluvio (nemolizumab-ilto) and deleted the asterisk for Skyrizi™ (risankizumab-rzaa) using CPT codes C9399, J3490, J3590.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=53066&ver=97"
+      }
+    ]
+  },
+  {
+    "name": "WPS Insurance Corporation (MAC - Part A, MAC - Part B)",
+    "count": 4,
+    "highImpact": 3,
+    "entries": [
+      {
+        "recordId": "A57944-v25",
+        "displayId": "A57944",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Hypoglossal Nerve Stimulation for Treatment of Obstructive Sleep Apnea",
+        "updatedOn": "05/01/2026",
+        "effectiveDate": "05/07/2026",
+        "impact": "high",
+        "tags": [
+          "coding"
+        ],
+        "summary": "High-signal revision from CMS notes: Posted 05/07/2026 Under Coding Guidelines added reduced services modifier 52 information under Implantation codes. Under CPT/HCPCS Modifiers added 64582, 64583, and 64584 to Group 1 Paragraph . This is effective 01/01...",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57944&ver=25"
+      },
+      {
+        "recordId": "A56915-v37",
+        "displayId": "A56915",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Urine Drug Testing",
+        "updatedOn": "04/29/2026",
+        "effectiveDate": "06/01/2026",
+        "impact": "high",
+        "tags": [
+          "coding"
+        ],
+        "summary": "High-signal revision from CMS notes: Posted 05/07/2026 Under ICD-10 Codes that Support Medical Necessity Group 1 Codes added F11.120, F12.10, F12.20, F12.21, F13.10, F13.20, F13,21, F14.10, F14.20, F14.21, F14.120, F15.10, F15.20, F15.21, F19.10, F19.21.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56915&ver=37"
+      },
+      {
+        "recordId": "A59809-v10",
+        "displayId": "A59809",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Botulinum Toxin Injections",
+        "updatedOn": "04/29/2026",
+        "effectiveDate": "04/09/2026",
+        "impact": "high",
+        "tags": [
+          "coding"
+        ],
+        "summary": "High-signal revision from CMS notes: Posted 05/07/2026. Update to revision history posted 04/0/09/2026. Under the ICD-10-CM Codes that Support Medical Necessity section, the group for Paralytic ptosis was removed. Revision effective 04/09/2026.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=59809&ver=10"
+      },
+      {
+        "recordId": "A58473-v11",
+        "displayId": "A58473",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Non-Invasive Fractional Flow Reserve (FFR) for Ischemic Heart Disease",
+        "updatedOn": "04/30/2026",
+        "effectiveDate": "01/01/2024",
+        "impact": "low",
+        "tags": [
+          "general update"
+        ],
+        "summary": "Lower-urgency correction or cleanup: Posted 04/30/2026: biennial review completed 04/30/2026 with no changes made to the article.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=58473&ver=11"
+      }
+    ]
+  },
+  {
+    "name": "National Government Services, Inc. (MAC - Part A, MAC - Part B)",
+    "count": 1,
+    "highImpact": 0,
+    "entries": [
+      {
+        "recordId": "L39036-v23",
+        "displayId": "L39036",
+        "docType": "LCD",
+        "source": "local",
+        "title": "Epidural Steroid Injections for Pain Management",
+        "updatedOn": "05/01/2026",
+        "effectiveDate": "05/07/2026",
+        "impact": "low",
+        "tags": [
+          "administrative correction"
+        ],
+        "summary": "Lower-urgency correction or cleanup: Corrected link for #31 in the bibliography.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=39036&ver=23"
+      }
+    ]
+  },
+  {
+    "name": "Palmetto GBA (MAC - Part B)",
+    "count": 1,
+    "highImpact": 1,
+    "entries": [
+      {
+        "recordId": "A58559-v35",
+        "displayId": "A58559",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Independent Diagnostic Testing Facilities (IDTF)",
+        "updatedOn": "05/01/2026",
+        "effectiveDate": "01/01/2026",
+        "impact": "high",
+        "tags": [
+          "coding",
+          "effective date"
+        ],
+        "summary": "High-signal revision from CMS notes: Under Article Text – Table: CPT/HCPCS Codes and CPT/HCPCS Codes Group 1: Codes added 70471. For 70471, under Article Text – Table: Supervising Physician Qualifications added Board Certified* Radiologist or Neurologist...",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=58559&ver=35"
+      }
+    ]
+  }
+]

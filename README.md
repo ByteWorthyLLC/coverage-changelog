@@ -42,6 +42,10 @@ Every build writes public artifacts:
 |---|---|
 | `public/data/latest.json` | Full dataset with stats, highlights, brief sections, and entries |
 | `public/data/feed.json` | Smaller flat feed for scripts and integrations |
+| `public/data/high-impact.json` | High-impact updates only |
+| `public/data/contractors.json` | Updates grouped by contractor |
+| `public/data/queues.json` | Operator review lanes for coding, criteria, effective dates, national policy, and retirements |
+| `public/data/manifest.json` | Current release metadata and artifact map |
 | `public/data/feed.csv` | Spreadsheet-friendly export |
 | `public/data/feed.ndjson` | Line-delimited export for data pipelines |
 | `public/briefs/latest.md` | Forwardable markdown brief |
@@ -106,6 +110,15 @@ CMS Coverage API
 ```
 
 The build is resilient to optional detail endpoint failures. If a single document enrichment fails, that enrichment is skipped and the rest of the dataset still ships. If the required CMS report fetch fails, the previous generated dataset is reused.
+
+## Current app features
+
+- Radar view for summary and source mix
+- Changes view with search, impact filters, document filters, contractor filters, theme filters, and sort modes
+- Queue view for coding review, coverage-criteria review, effective-date watch, national monitor, and retirement watch lanes
+- Detail panel with official source text and CMS links
+- Brief view for forwardable review notes
+- Feed view for all public artifacts
 
 ## Product principles
 

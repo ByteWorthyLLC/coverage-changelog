@@ -2,6 +2,7 @@ import {
   ArrowUpRight,
   Bell,
   Braces,
+  CalendarClock,
   Clipboard,
   Download,
   ExternalLink,
@@ -12,6 +13,7 @@ import {
   Radio,
   Rss,
   Search,
+  SlidersHorizontal,
   ShieldCheck,
   Sparkles,
   X,
@@ -24,14 +26,17 @@ import {
   formatImpactLabel,
   formatRelativeWindow,
   formatSourceLabel,
+  getDateSortValue,
 } from './lib/presentation'
 
-type ViewMode = 'radar' | 'changes' | 'brief' | 'feed'
-type QuickFilter = 'all' | 'high' | 'coding' | 'local' | 'national' | 'admin'
+type ViewMode = 'radar' | 'changes' | 'queue' | 'brief' | 'feed'
+type QuickFilter = 'all' | 'high' | 'coding' | 'effective' | 'local' | 'national' | 'admin'
+type SortMode = 'impact' | 'updated' | 'effective' | 'title'
 
 const viewTabs: Array<{ id: ViewMode; label: string }> = [
   { id: 'radar', label: 'Radar' },
   { id: 'changes', label: 'Changes' },
+  { id: 'queue', label: 'Queue' },
   { id: 'brief', label: 'Brief' },
   { id: 'feed', label: 'Feed' },
 ]
@@ -40,9 +45,43 @@ const quickFilters: Array<{ id: QuickFilter; label: string }> = [
   { id: 'all', label: 'All' },
   { id: 'high', label: 'High impact' },
   { id: 'coding', label: 'Coding' },
+  { id: 'effective', label: 'Effective date' },
   { id: 'local', label: 'Local' },
   { id: 'national', label: 'National' },
   { id: 'admin', label: 'Admin' },
+]
+
+const queueDefinitions = [
+  {
+    id: 'coding-review',
+    title: 'Coding review',
+    description: 'Code-set, modifier, HCPCS, CPT, ICD-10, and charge capture changes.',
+    matcher: (entry: CoverageEntry) => entry.tags.includes('coding'),
+  },
+  {
+    id: 'criteria-review',
+    title: 'Coverage criteria',
+    description: 'Medical-necessity or coverage-language changes that can alter intake rules.',
+    matcher: (entry: CoverageEntry) => entry.tags.includes('coverage criteria'),
+  },
+  {
+    id: 'effective-watch',
+    title: 'Effective date watch',
+    description: 'Items with explicit effective-date language or an effective date to verify.',
+    matcher: (entry: CoverageEntry) => entry.tags.includes('effective date') || Boolean(entry.effectiveDate),
+  },
+  {
+    id: 'national-monitor',
+    title: 'National monitor',
+    description: 'NCD-level updates worth separating from MAC-local workflow noise.',
+    matcher: (entry: CoverageEntry) => entry.source === 'national',
+  },
+  {
+    id: 'retirement-watch',
+    title: 'Retirement watch',
+    description: 'Retirement, withdrawal, or future-retire signals that can break old references.',
+    matcher: (entry: CoverageEntry) => entry.tags.includes('retirement') || Boolean(entry.retirementDate),
+  },
 ]
 
 function countBy<T extends string>(values: T[]): Array<{ label: T; count: number }> {
@@ -88,6 +127,10 @@ function matchesQuickFilter(entry: CoverageEntry, quickFilter: QuickFilter): boo
     return entry.tags.includes('coding')
   }
 
+  if (quickFilter === 'effective') {
+    return entry.tags.includes('effective date') || Boolean(entry.effectiveDate)
+  }
+
   if (quickFilter === 'local' || quickFilter === 'national') {
     return entry.source === quickFilter
   }
@@ -101,6 +144,9 @@ function App() {
   const [impact, setImpact] = useState<'all' | ImpactLevel>('all')
   const [docType, setDocType] = useState<'all' | CoverageEntry['docType']>('all')
   const [quickFilter, setQuickFilter] = useState<QuickFilter>('all')
+  const [contractor, setContractor] = useState('all')
+  const [tag, setTag] = useState('all')
+  const [sortMode, setSortMode] = useState<SortMode>('impact')
   const [viewMode, setViewMode] = useState<ViewMode>('radar')
   const [selectedEntryId, setSelectedEntryId] = useState<string>('')
   const [copied, setCopied] = useState('')
@@ -142,14 +188,40 @@ function App() {
   const entries = useMemo(() => dataset?.entries ?? [], [dataset])
   const normalizedSearch = deferredSearch.trim().toLowerCase()
   const filteredEntries = useMemo(
-    () =>
-      entries.filter((entry) => {
+    () => {
+      const visible = entries.filter((entry) => {
         const matchesImpact = impact === 'all' || entry.impact === impact
         const matchesDocType = docType === 'all' || entry.docType === docType
+        const matchesContractor = contractor === 'all' || entry.contractorName === contractor
+        const matchesTag = tag === 'all' || entry.tags.includes(tag)
         const matchesSearch = normalizedSearch.length === 0 || getEntryText(entry).includes(normalizedSearch)
-        return matchesImpact && matchesDocType && matchesSearch && matchesQuickFilter(entry, quickFilter)
-      }),
-    [docType, entries, impact, normalizedSearch, quickFilter],
+        return (
+          matchesImpact &&
+          matchesDocType &&
+          matchesContractor &&
+          matchesTag &&
+          matchesSearch &&
+          matchesQuickFilter(entry, quickFilter)
+        )
+      })
+
+      return [...visible].sort((left, right) => {
+        if (sortMode === 'updated') {
+          return right.updatedSort.localeCompare(left.updatedSort)
+        }
+
+        if (sortMode === 'effective') {
+          return getDateSortValue(right.effectiveDate) - getDateSortValue(left.effectiveDate)
+        }
+
+        if (sortMode === 'title') {
+          return left.title.localeCompare(right.title)
+        }
+
+        return right.impactScore - left.impactScore || right.updatedSort.localeCompare(left.updatedSort)
+      })
+    },
+    [contractor, docType, entries, impact, normalizedSearch, quickFilter, sortMode, tag],
   )
 
   const selectedEntry =
@@ -164,9 +236,32 @@ function App() {
     const byImpact = countBy(entries.map((entry) => entry.impact))
     const topContractors = countBy(entries.map((entry) => entry.contractorName).filter(Boolean) as string[]).slice(0, 6)
     const topTags = countBy(entries.flatMap((entry) => entry.tags)).slice(0, 6)
+    const contractors = countBy(entries.map((entry) => entry.contractorName).filter(Boolean) as string[])
+    const tags = countBy(entries.flatMap((entry) => entry.tags))
 
-    return { byDocType, byImpact, topContractors, topTags }
+    return { byDocType, byImpact, contractors, tags, topContractors, topTags }
   }, [entries])
+
+  const queueItems = useMemo(
+    () =>
+      queueDefinitions.map((definition) => {
+        const matches = entries.filter(definition.matcher).slice(0, 8)
+        return {
+          ...definition,
+          entries: matches,
+          count: entries.filter(definition.matcher).length,
+          highImpact: entries.filter((entry) => definition.matcher(entry) && entry.impact === 'high').length,
+        }
+      }),
+    [entries],
+  )
+
+  const queueBrief = queueItems
+    .map((item) => {
+      const leads = item.entries.slice(0, 3).map((entry) => `${entry.displayId}: ${entry.title}`).join('\n')
+      return `${item.title} (${item.count})\n${leads || 'No current items.'}`
+    })
+    .join('\n\n')
 
   const copyText = async (label: string, value: string) => {
     await navigator.clipboard.writeText(value)
@@ -338,6 +433,37 @@ function App() {
               <option value="NCD">NCD</option>
             </select>
           </label>
+          <label>
+            <Radio aria-hidden="true" />
+            <select value={contractor} onChange={(event) => setContractor(event.target.value)}>
+              <option value="all">All contractors</option>
+              {breakdowns.contractors.map((item) => (
+                <option key={item.label} value={item.label}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <SlidersHorizontal aria-hidden="true" />
+            <select value={tag} onChange={(event) => setTag(event.target.value)}>
+              <option value="all">All themes</option>
+              {breakdowns.tags.map((item) => (
+                <option key={item.label} value={item.label}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <SlidersHorizontal aria-hidden="true" />
+            <select value={sortMode} onChange={(event) => setSortMode(event.target.value as SortMode)}>
+              <option value="impact">Sort by impact</option>
+              <option value="updated">Sort by updated</option>
+              <option value="effective">Sort by effective date</option>
+              <option value="title">Sort by title</option>
+            </select>
+          </label>
         </div>
       </section>
 
@@ -425,6 +551,13 @@ function App() {
                 <span className="change-meta">{formatImpactLabel(entry.impact)}</span>
               </button>
             ))}
+            {filteredEntries.length === 0 ? (
+              <div className="empty-list">
+                <Search aria-hidden="true" />
+                <strong>No matching coverage changes.</strong>
+                <p>Try clearing one filter, switching contractor, or searching a document ID.</p>
+              </div>
+            ) : null}
           </div>
 
           {selectedEntry ? (
@@ -495,6 +628,57 @@ function App() {
         </section>
       ) : null}
 
+      {viewMode === 'queue' ? (
+        <section className="queue-view">
+          <article className="queue-hero">
+            <div className="panel-title">
+              <CalendarClock aria-hidden="true" />
+              <h2>Operator review queue</h2>
+            </div>
+            <p>
+              A no-login triage layer that turns public CMS updates into practical review lanes
+              for coding, criteria, effective dates, national policy, and retirements.
+            </p>
+            <button type="button" onClick={() => void copyText('queue-brief', queueBrief)}>
+              <Clipboard aria-hidden="true" />
+              {copied === 'queue-brief' ? 'Copied queue brief' : 'Copy queue brief'}
+            </button>
+          </article>
+          {queueItems.map((item) => (
+            <article key={item.id} className="queue-card">
+              <div className="queue-card-top">
+                <div>
+                  <p className="eyebrow">{item.highImpact} high impact</p>
+                  <h2>{item.title}</h2>
+                </div>
+                <strong>{item.count}</strong>
+              </div>
+              <p>{item.description}</p>
+              <div className="queue-list">
+                {item.entries.length > 0 ? (
+                  item.entries.slice(0, 5).map((entry) => (
+                    <button
+                      key={`${item.id}-${entry.recordId}`}
+                      type="button"
+                      className={`queue-entry impact-${entry.impact}`}
+                      onClick={() => {
+                        setSelectedEntryId(entry.recordId)
+                        setViewMode('changes')
+                      }}
+                    >
+                      <span>{entry.displayId}</span>
+                      <strong>{entry.title}</strong>
+                    </button>
+                  ))
+                ) : (
+                  <span className="quiet-note">No current items in this lane.</span>
+                )}
+              </div>
+            </article>
+          ))}
+        </section>
+      ) : null}
+
       {viewMode === 'brief' ? (
         <section className="brief-view">
           <article>
@@ -557,6 +741,38 @@ function App() {
             <p>Spreadsheet-friendly export for review queues and contractor slices.</p>
             <a href={`${import.meta.env.BASE_URL}data/feed.csv`} target="_blank" rel="noreferrer">
               Download CSV
+            </a>
+          </article>
+          <article className="feed-card">
+            <Sparkles aria-hidden="true" />
+            <h2>High-impact feed</h2>
+            <p>A smaller JSON feed focused only on changes scored as high impact.</p>
+            <a href={`${import.meta.env.BASE_URL}data/high-impact.json`} target="_blank" rel="noreferrer">
+              Open high-impact.json
+            </a>
+          </article>
+          <article className="feed-card">
+            <Radio aria-hidden="true" />
+            <h2>Contractor slices</h2>
+            <p>Grouped counts and entries by contractor for local coverage review.</p>
+            <a href={`${import.meta.env.BASE_URL}data/contractors.json`} target="_blank" rel="noreferrer">
+              Open contractors.json
+            </a>
+          </article>
+          <article className="feed-card">
+            <ShieldCheck aria-hidden="true" />
+            <h2>Manifest</h2>
+            <p>Machine-readable metadata for the current generated release.</p>
+            <a href={`${import.meta.env.BASE_URL}data/manifest.json`} target="_blank" rel="noreferrer">
+              Open manifest.json
+            </a>
+          </article>
+          <article className="feed-card">
+            <CalendarClock aria-hidden="true" />
+            <h2>Review queues</h2>
+            <p>Pre-grouped operator lanes for coding, criteria, effective dates, and retirements.</p>
+            <a href={`${import.meta.env.BASE_URL}data/queues.json`} target="_blank" rel="noreferrer">
+              Open queues.json
             </a>
           </article>
           <article className="feed-card">

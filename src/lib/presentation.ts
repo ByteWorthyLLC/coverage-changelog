@@ -32,6 +32,14 @@ function parseLocalDate(value: string): Date | null {
   return parsed
 }
 
+export function getDateSortValue(value?: string): number {
+  if (!value) {
+    return 0
+  }
+
+  return parseLocalDate(value)?.getTime() ?? 0
+}
+
 export function formatDateLabel(value?: string): string {
   if (!value) {
     return 'Unknown'

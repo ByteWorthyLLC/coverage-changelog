@@ -101,6 +101,104 @@ async function writeArtifacts(dataset: CoverageDataset): Promise<void> {
     summary: entry.summary,
     detailUrl: entry.detailUrl,
   }))
+  const highImpactFeed = feed.filter((entry) => entry.impact === 'high')
+  const contractors = dataset.entries.reduce<Record<string, typeof feed>>((acc, entry) => {
+    const key = entry.contractorName ?? 'National coverage'
+    acc[key] = acc[key] ?? []
+    acc[key].push({
+      recordId: entry.recordId,
+      displayId: entry.displayId,
+      docType: entry.docType,
+      source: entry.source,
+      title: entry.title,
+      updatedOn: entry.updatedOn,
+      effectiveDate: entry.effectiveDate,
+      impact: entry.impact,
+      tags: entry.tags,
+      summary: entry.summary,
+      detailUrl: entry.detailUrl,
+    })
+    return acc
+  }, {})
+  const contractorFeed = Object.entries(contractors)
+    .map(([name, entries]) => ({
+      name,
+      count: entries.length,
+      highImpact: entries.filter((entry) => entry.impact === 'high').length,
+      entries,
+    }))
+    .sort((left, right) => right.count - left.count || left.name.localeCompare(right.name))
+  const queueDefinitions = [
+    {
+      id: 'coding-review',
+      title: 'Coding review',
+      description: 'Code-set, modifier, HCPCS, CPT, ICD-10, and charge capture changes.',
+      matcher: (entry: CoverageDataset['entries'][number]) => entry.tags.includes('coding'),
+    },
+    {
+      id: 'criteria-review',
+      title: 'Coverage criteria',
+      description: 'Medical-necessity or coverage-language changes that can alter intake rules.',
+      matcher: (entry: CoverageDataset['entries'][number]) => entry.tags.includes('coverage criteria'),
+    },
+    {
+      id: 'effective-watch',
+      title: 'Effective date watch',
+      description: 'Items with explicit effective-date language or an effective date to verify.',
+      matcher: (entry: CoverageDataset['entries'][number]) => entry.tags.includes('effective date') || Boolean(entry.effectiveDate),
+    },
+    {
+      id: 'national-monitor',
+      title: 'National monitor',
+      description: 'NCD-level updates worth separating from MAC-local workflow noise.',
+      matcher: (entry: CoverageDataset['entries'][number]) => entry.source === 'national',
+    },
+    {
+      id: 'retirement-watch',
+      title: 'Retirement watch',
+      description: 'Retirement, withdrawal, or future-retire signals that can break old references.',
+      matcher: (entry: CoverageDataset['entries'][number]) => entry.tags.includes('retirement') || Boolean(entry.retirementDate),
+    },
+  ]
+  const queues = queueDefinitions.map((definition) => {
+    const entries = dataset.entries.filter(definition.matcher)
+    return {
+      id: definition.id,
+      title: definition.title,
+      description: definition.description,
+      count: entries.length,
+      highImpact: entries.filter((entry) => entry.impact === 'high').length,
+      entries: entries.map((entry) => ({
+        recordId: entry.recordId,
+        displayId: entry.displayId,
+        impact: entry.impact,
+        title: entry.title,
+        updatedOn: entry.updatedOn,
+        effectiveDate: entry.effectiveDate,
+        summary: entry.summary,
+        detailUrl: entry.detailUrl,
+      })),
+    }
+  })
+  const manifest = {
+    project: dataset.project,
+    generatedAt: dataset.generatedAt,
+    cmsApiVersion: dataset.cmsApiVersion,
+    updatePeriod: dataset.updatePeriod,
+    stats: dataset.stats,
+    artifacts: {
+      latest: 'data/latest.json',
+      feed: 'data/feed.json',
+      highImpact: 'data/high-impact.json',
+      contractors: 'data/contractors.json',
+      queues: 'data/queues.json',
+      csv: 'data/feed.csv',
+      ndjson: 'data/feed.ndjson',
+      markdownBrief: 'briefs/latest.md',
+      htmlBrief: 'briefs/latest.html',
+      rss: 'rss.xml',
+    },
+  }
 
   const csvRows = [
     [
@@ -176,14 +274,14 @@ async function writeArtifacts(dataset: CoverageDataset): Promise<void> {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escapeHtml(dataset.brief.title)}</title>
     <style>
-      body { margin: 0; font-family: 'IBM Plex Sans', system-ui, sans-serif; background: #f7f2e8; color: #173741; }
+      body { margin: 0; font-family: Inter, system-ui, sans-serif; background: #fafafa; color: #0f172a; }
       main { max-width: 880px; margin: 0 auto; padding: 40px 20px 72px; }
-      h1, h2 { font-family: 'Georgia', serif; }
-      .eyebrow { font-family: 'IBM Plex Mono', ui-monospace, monospace; letter-spacing: 0.16em; text-transform: uppercase; color: #35555e; font-size: 12px; }
-      .hero, section { background: rgba(255,255,255,0.72); border: 1px solid rgba(20,55,64,0.14); border-radius: 22px; padding: 24px; box-shadow: 0 14px 36px rgba(54,44,31,0.08); margin-top: 16px; }
+      h1, h2 { letter-spacing: -0.02em; }
+      .eyebrow { font-family: 'JetBrains Mono', ui-monospace, monospace; letter-spacing: 0.12em; text-transform: uppercase; color: #64748b; font-size: 12px; }
+      .hero, section { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 24px; box-shadow: 0 24px 48px rgba(15, 23, 42, 0.06); margin-top: 16px; }
       ul { padding-left: 18px; }
       li { margin-top: 10px; line-height: 1.6; }
-      a { color: #8b461c; }
+      a { color: #2563eb; }
     </style>
   </head>
   <body>
@@ -237,6 +335,10 @@ async function writeArtifacts(dataset: CoverageDataset): Promise<void> {
 
   await writeFile(latestDatasetPath, `${JSON.stringify(dataset, null, 2)}\n`)
   await writeFile(path.join(dataDir, 'feed.json'), `${JSON.stringify(feed, null, 2)}\n`)
+  await writeFile(path.join(dataDir, 'high-impact.json'), `${JSON.stringify(highImpactFeed, null, 2)}\n`)
+  await writeFile(path.join(dataDir, 'contractors.json'), `${JSON.stringify(contractorFeed, null, 2)}\n`)
+  await writeFile(path.join(dataDir, 'queues.json'), `${JSON.stringify(queues, null, 2)}\n`)
+  await writeFile(path.join(dataDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`)
   await writeFile(path.join(dataDir, 'feed.csv'), `${csvRows}\n`)
   await writeFile(path.join(dataDir, 'feed.ndjson'), `${ndjson}\n`)
   await writeFile(path.join(briefDir, 'latest.md'), markdown)

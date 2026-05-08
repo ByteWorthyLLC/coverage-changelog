@@ -1,0 +1,32 @@
+{
+  "project": "Coverage Changelog",
+  "generatedAt": "2026-05-08T02:01:04.494Z",
+  "cmsApiVersion": "1.6",
+  "updatePeriod": {
+    "periodId": 1198,
+    "beginDate": "20260427",
+    "endDate": "20260504",
+    "label": "Apr 27, 2026 to May 4, 2026"
+  },
+  "stats": {
+    "total": 30,
+    "local": 22,
+    "national": 8,
+    "highImpact": 9,
+    "codingChanges": 8,
+    "coverageChanges": 0,
+    "contractors": 6
+  },
+  "artifacts": {
+    "latest": "data/latest.json",
+    "feed": "data/feed.json",
+    "highImpact": "data/high-impact.json",
+    "contractors": "data/contractors.json",
+    "queues": "data/queues.json",
+    "csv": "data/feed.csv",
+    "ndjson": "data/feed.ndjson",
+    "markdownBrief": "briefs/latest.md",
+    "htmlBrief": "briefs/latest.html",
+    "rss": "rss.xml"
+  }
+}
