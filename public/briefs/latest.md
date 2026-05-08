@@ -2,7 +2,7 @@
 
 Apr 27, 2026 to May 4, 2026 · 30 tracked updates
 
-Generated: 2026-05-08T02:17:27.135Z
+Generated: 2026-05-08T02:32:11.225Z
 
 ## Snapshot
 - A58559: Under Article Text – Table: CPT/HCPCS Codes and CPT/HCPCS Codes Group 1: Codes added 70471. For 70471, under Article Text – Table: Supervising Physician Qualifications added Board Certified* Radiologist or Neurologist... (coding, effective date)

@@ -111,6 +111,8 @@ CMS Coverage API
 
 The build is resilient to optional detail endpoint failures. If a single document enrichment fails, that enrichment is skipped and the rest of the dataset still ships. If the required CMS report fetch fails, the previous generated dataset is reused.
 
+UI system notes live in `docs/UI_SYSTEM.md`.
+
 ## Current app features
 
 - Radar view for summary and source mix

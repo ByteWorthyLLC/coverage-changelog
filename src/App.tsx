@@ -16,7 +16,6 @@ import {
   Search,
   SlidersHorizontal,
   ShieldCheck,
-  Sparkles,
   Target,
   X,
 } from 'lucide-react'
@@ -283,6 +282,7 @@ function App() {
     sortMode !== 'impact' ? `Sort: ${sortMode}` : null,
     normalizedSearch ? `Search: ${deferredSearch.trim()}` : null,
   ].filter(Boolean) as string[]
+  const visibleFilterLabels = viewMode === 'changes' ? activeFilterLabels : []
 
   const resetFilters = () => {
     setSearch('')
@@ -383,7 +383,6 @@ function App() {
             <button
               type="button"
               onClick={() => {
-                setQuickFilter('coding')
                 setViewMode('queue')
               }}
             >
@@ -452,88 +451,92 @@ function App() {
           ))}
         </div>
 
-        <div className="search-box">
-          <Search aria-hidden="true" />
-          <input
-            type="search"
-            placeholder="Search code, contractor, document, policy language"
-            value={search}
-            onChange={(event) => {
-              const nextValue = event.target.value
-              startTransition(() => setSearch(nextValue))
-            }}
-          />
-        </div>
+        {viewMode === 'changes' ? (
+          <div className="search-box">
+            <Search aria-hidden="true" />
+            <input
+              type="search"
+              placeholder="Search code, contractor, document, policy language"
+              value={search}
+              onChange={(event) => {
+                const nextValue = event.target.value
+                startTransition(() => setSearch(nextValue))
+              }}
+            />
+          </div>
+        ) : null}
       </section>
 
-      <section className="filter-row" aria-label="Quick filters">
-        <div className="quick-filters">
-          {quickFilters.map((filter) => (
-            <button
-              key={filter.id}
-              type="button"
-              className={quickFilter === filter.id ? 'active' : ''}
-              onClick={() => setQuickFilter(filter.id)}
-            >
-              {filter.label}
-            </button>
-          ))}
-        </div>
-        <div className="select-filters">
-          <label>
-            <Filter aria-hidden="true" />
-            <select value={impact} onChange={(event) => setImpact(event.target.value as 'all' | ImpactLevel)}>
-              <option value="all">All impact</option>
-              <option value="high">High impact</option>
-              <option value="medium">Medium impact</option>
-              <option value="low">Low impact</option>
-            </select>
-          </label>
-          <label>
-            <FileJson aria-hidden="true" />
-            <select
-              value={docType}
-              onChange={(event) => setDocType(event.target.value as 'all' | CoverageEntry['docType'])}
-            >
-              <option value="all">All documents</option>
-              <option value="LCD">LCD</option>
-              <option value="Article">Article</option>
-              <option value="NCD">NCD</option>
-            </select>
-          </label>
-          <label>
-            <Radio aria-hidden="true" />
-            <select value={contractor} onChange={(event) => setContractor(event.target.value)}>
-              <option value="all">All contractors</option>
-              {breakdowns.contractors.map((item) => (
-                <option key={item.label} value={item.label}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            <SlidersHorizontal aria-hidden="true" />
-            <select value={tag} onChange={(event) => setTag(event.target.value)}>
-              <option value="all">All themes</option>
-              {breakdowns.tags.map((item) => (
-                <option key={item.label} value={item.label}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            <SlidersHorizontal aria-hidden="true" />
-            <select value={sortMode} onChange={(event) => setSortMode(event.target.value as SortMode)}>
-              <option value="impact">Sort by impact</option>
-              <option value="updated">Sort by updated</option>
-              <option value="effective">Sort by effective date</option>
-              <option value="title">Sort by title</option>
-            </select>
-          </label>
-        </div>
-      </section>
+      {viewMode === 'changes' ? (
+        <section className="filter-row" aria-label="Change filters">
+          <div className="quick-filters">
+            {quickFilters.map((filter) => (
+              <button
+                key={filter.id}
+                type="button"
+                className={quickFilter === filter.id ? 'active' : ''}
+                onClick={() => setQuickFilter(filter.id)}
+              >
+                {filter.label}
+              </button>
+            ))}
+          </div>
+          <div className="select-filters">
+            <label>
+              <Filter aria-hidden="true" />
+              <select value={impact} onChange={(event) => setImpact(event.target.value as 'all' | ImpactLevel)}>
+                <option value="all">All impact</option>
+                <option value="high">High impact</option>
+                <option value="medium">Medium impact</option>
+                <option value="low">Low impact</option>
+              </select>
+            </label>
+            <label>
+              <FileJson aria-hidden="true" />
+              <select
+                value={docType}
+                onChange={(event) => setDocType(event.target.value as 'all' | CoverageEntry['docType'])}
+              >
+                <option value="all">All documents</option>
+                <option value="LCD">LCD</option>
+                <option value="Article">Article</option>
+                <option value="NCD">NCD</option>
+              </select>
+            </label>
+            <label>
+              <Radio aria-hidden="true" />
+              <select value={contractor} onChange={(event) => setContractor(event.target.value)}>
+                <option value="all">All contractors</option>
+                {breakdowns.contractors.map((item) => (
+                  <option key={item.label} value={item.label}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <SlidersHorizontal aria-hidden="true" />
+              <select value={tag} onChange={(event) => setTag(event.target.value)}>
+                <option value="all">All themes</option>
+                {breakdowns.tags.map((item) => (
+                  <option key={item.label} value={item.label}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <SlidersHorizontal aria-hidden="true" />
+              <select value={sortMode} onChange={(event) => setSortMode(event.target.value as SortMode)}>
+                <option value="impact">Sort by impact</option>
+                <option value="updated">Sort by updated</option>
+                <option value="effective">Sort by effective date</option>
+                <option value="title">Sort by title</option>
+              </select>
+            </label>
+          </div>
+        </section>
+      ) : null}
 
       <section className="view-context" aria-label="Current view context">
         <div>
@@ -541,9 +544,9 @@ function App() {
           <strong>{viewCopy[viewMode]}</strong>
         </div>
         <div className="active-filters" aria-label="Active filters">
-          {activeFilterLabels.length > 0 ? (
+          {visibleFilterLabels.length > 0 ? (
             <>
-              {activeFilterLabels.map((label) => (
+              {visibleFilterLabels.map((label) => (
                 <span key={label}>{label}</span>
               ))}
               <button type="button" onClick={resetFilters}>
@@ -555,12 +558,15 @@ function App() {
           )}
         </div>
       </section>
+      <div className="sr-only" aria-live="polite">
+        {copied ? 'Copied to clipboard.' : ''}
+      </div>
 
       {viewMode === 'radar' ? (
         <section className="radar-grid">
           <div className="analysis-panel span-2">
             <div className="panel-title">
-              <Sparkles aria-hidden="true" />
+              <Target aria-hidden="true" />
               <h2>Highest signal updates</h2>
             </div>
             <div className="highlight-strip">
@@ -836,7 +842,7 @@ function App() {
             </a>
           </article>
           <article className="feed-card">
-            <Sparkles aria-hidden="true" />
+            <Target aria-hidden="true" />
             <h2>High-impact feed</h2>
             <p>A smaller JSON feed focused only on changes scored as high impact.</p>
             <a href={`${import.meta.env.BASE_URL}data/high-impact.json`} target="_blank" rel="noreferrer">
