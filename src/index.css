@@ -1,0 +1,111 @@
+:root {
+  --paper: #f7f2e8;
+  --paper-deep: #efe4d6;
+  --panel: rgba(255, 251, 245, 0.92);
+  --ink: #173741;
+  --muted: #4c676f;
+  --muted-strong: #35555e;
+  --accent: #8b461c;
+  --accent-soft: #b87235;
+  --teal: #226c6e;
+  --line: rgba(20, 55, 64, 0.14);
+  --shadow: 0 18px 60px rgba(62, 51, 35, 0.12);
+  --sans: 'IBM Plex Sans', sans-serif;
+  --heading: 'Newsreader', serif;
+  --mono: 'IBM Plex Mono', monospace;
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(184, 114, 53, 0.16), transparent 20%),
+    radial-gradient(circle at top right, rgba(34, 108, 110, 0.12), transparent 18%),
+    linear-gradient(180deg, #fbf8f3, #f2eadf 70%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--ink);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(20, 55, 64, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 55, 64, 0.035) 1px, transparent 1px);
+  background-size: 100% 38px, 38px 100%;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.16), transparent 88%);
+}
+
+a {
+  color: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  color: var(--ink);
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+h1 {
+  font-size: clamp(3rem, 7vw, 5.6rem);
+  line-height: 0.94;
+}
+
+h2 {
+  font-size: clamp(1.6rem, 3.2vw, 2.5rem);
+  line-height: 1.02;
+}
+
+h3 {
+  font-family: var(--sans);
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+p {
+  margin: 0;
+}
+
+::selection {
+  background: rgba(34, 108, 110, 0.18);
+}
+
+@media (max-width: 860px) {
+  :root {
+    font-size: 16px;
+  }
+
+  h1 {
+    line-height: 0.98;
+  }
+}
