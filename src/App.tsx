@@ -3,6 +3,7 @@ import {
   Bell,
   Braces,
   CalendarClock,
+  CheckCircle2,
   Clipboard,
   Download,
   ExternalLink,
@@ -16,6 +17,7 @@ import {
   SlidersHorizontal,
   ShieldCheck,
   Sparkles,
+  Target,
   X,
 } from 'lucide-react'
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from 'react'
@@ -50,6 +52,14 @@ const quickFilters: Array<{ id: QuickFilter; label: string }> = [
   { id: 'national', label: 'National' },
   { id: 'admin', label: 'Admin' },
 ]
+
+const viewCopy: Record<ViewMode, string> = {
+  radar: 'Scan the signal before opening the workbench.',
+  changes: 'Filter, sort, and inspect official revision language.',
+  queue: 'Turn the raw CMS feed into operator review lanes.',
+  brief: 'Use the forwardable summary for a Monday handoff.',
+  feed: 'Pull static files into scripts, spreadsheets, RSS, or downstream tools.',
+}
 
 const queueDefinitions = [
   {
@@ -255,6 +265,7 @@ function App() {
       }),
     [entries],
   )
+  const activeQueueLanes = queueItems.filter((item) => item.count > 0).length
 
   const queueBrief = queueItems
     .map((item) => {
@@ -262,6 +273,26 @@ function App() {
       return `${item.title} (${item.count})\n${leads || 'No current items.'}`
     })
     .join('\n\n')
+
+  const activeFilterLabels = [
+    quickFilter !== 'all' ? quickFilters.find((filter) => filter.id === quickFilter)?.label : null,
+    impact !== 'all' ? `${formatImpactLabel(impact)}` : null,
+    docType !== 'all' ? docType : null,
+    contractor !== 'all' ? contractor : null,
+    tag !== 'all' ? tag : null,
+    sortMode !== 'impact' ? `Sort: ${sortMode}` : null,
+    normalizedSearch ? `Search: ${deferredSearch.trim()}` : null,
+  ].filter(Boolean) as string[]
+
+  const resetFilters = () => {
+    setSearch('')
+    setImpact('all')
+    setDocType('all')
+    setQuickFilter('all')
+    setContractor('all')
+    setTag('all')
+    setSortMode('impact')
+  }
 
   const copyText = async (label: string, value: string) => {
     await navigator.clipboard.writeText(value)
@@ -335,6 +366,41 @@ function App() {
             Official CMS updates are pulled into static artifacts, sorted by likely work impact,
             and published with no login, backend, patient data, or paid API dependency.
           </p>
+          <div className="decision-row" aria-label="Suggested next actions">
+            <button
+              type="button"
+              onClick={() => {
+                setQuickFilter('high')
+                setViewMode('changes')
+              }}
+            >
+              <Target aria-hidden="true" />
+              <span>
+                <strong>Start with risk</strong>
+                <small>{dataset.stats.highImpact} high-impact updates</small>
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setQuickFilter('coding')
+                setViewMode('queue')
+              }}
+            >
+              <CheckCircle2 aria-hidden="true" />
+              <span>
+                <strong>Open coding queue</strong>
+                <small>{dataset.stats.codingChanges} coding flags</small>
+              </span>
+            </button>
+            <a href={`${import.meta.env.BASE_URL}data/manifest.json`} target="_blank" rel="noreferrer">
+              <FileJson aria-hidden="true" />
+              <span>
+                <strong>Use the feed</strong>
+                <small>static files, no API key</small>
+              </span>
+            </a>
+          </div>
           <div className="signal-grid">
             <div>
               <strong>{dataset.stats.total}</strong>
@@ -380,6 +446,8 @@ function App() {
               aria-selected={viewMode === tab.id}
             >
               {tab.label}
+              {tab.id === 'changes' ? <span>{entries.length}</span> : null}
+              {tab.id === 'queue' ? <span>{activeQueueLanes}</span> : null}
             </button>
           ))}
         </div>
@@ -464,6 +532,27 @@ function App() {
               <option value="title">Sort by title</option>
             </select>
           </label>
+        </div>
+      </section>
+
+      <section className="view-context" aria-label="Current view context">
+        <div>
+          <p className="eyebrow">{viewMode}</p>
+          <strong>{viewCopy[viewMode]}</strong>
+        </div>
+        <div className="active-filters" aria-label="Active filters">
+          {activeFilterLabels.length > 0 ? (
+            <>
+              {activeFilterLabels.map((label) => (
+                <span key={label}>{label}</span>
+              ))}
+              <button type="button" onClick={resetFilters}>
+                Clear filters
+              </button>
+            </>
+          ) : (
+            <span>Full coverage window</span>
+          )}
         </div>
       </section>
 
@@ -652,6 +741,9 @@ function App() {
                   <h2>{item.title}</h2>
                 </div>
                 <strong>{item.count}</strong>
+              </div>
+              <div className="queue-meter" aria-label={`${item.highImpact} high-impact items out of ${item.count}`}>
+                <span style={{ width: `${item.count > 0 ? Math.max((item.highImpact / item.count) * 100, 8) : 0}%` }} />
               </div>
               <p>{item.description}</p>
               <div className="queue-list">

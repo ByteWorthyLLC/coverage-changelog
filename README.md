@@ -114,7 +114,9 @@ The build is resilient to optional detail endpoint failures. If a single documen
 ## Current app features
 
 - Radar view for summary and source mix
+- Hero action cards for high-risk review, coding queue, and static feeds
 - Changes view with search, impact filters, document filters, contractor filters, theme filters, and sort modes
+- Active filter chips with one-click reset
 - Queue view for coding review, coverage-criteria review, effective-date watch, national monitor, and retirement watch lanes
 - Detail panel with official source text and CMS links
 - Brief view for forwardable review notes
