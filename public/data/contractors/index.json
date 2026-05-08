@@ -1,70 +1,73 @@
 {
-  "project": "Coverage Changelog",
   "generatedAt": "2026-05-08T15:59:01.794Z",
-  "cmsApiVersion": "1.6",
   "updatePeriod": {
     "periodId": 1198,
     "beginDate": "20260427",
     "endDate": "20260504",
     "label": "Apr 27, 2026 to May 4, 2026"
   },
-  "stats": {
-    "total": 30,
-    "local": 22,
-    "national": 8,
-    "highImpact": 9,
-    "codingChanges": 8,
-    "coverageChanges": 0,
-    "contractors": 6
-  },
-  "artifacts": {
-    "latest": "data/latest.json",
-    "feed": "data/feed.json",
-    "highImpact": "data/high-impact.json",
-    "contractors": "data/contractors.json",
-    "contractorIndex": "data/contractors/index.json",
-    "queues": "data/queues.json",
-    "csv": "data/feed.csv",
-    "ndjson": "data/feed.ndjson",
-    "markdownBrief": "briefs/latest.md",
-    "htmlBrief": "briefs/latest.html",
-    "ogImage": "og-image.svg",
-    "rss": "rss.xml"
-  },
   "contractors": [
     {
       "slug": "cgs-administrators",
+      "name": "CGS Administrators, LLC",
       "shortName": "CGS Administrators",
+      "jurisdictions": [
+        "J15"
+      ],
       "count": 8,
       "highImpact": 0
     },
     {
       "slug": "national-coverage",
+      "name": "National coverage (CMS)",
       "shortName": "National coverage",
+      "jurisdictions": [
+        "NCD"
+      ],
       "count": 8,
       "highImpact": 0
     },
     {
       "slug": "palmetto-gba",
+      "name": "Palmetto GBA",
       "shortName": "Palmetto GBA",
+      "jurisdictions": [
+        "JJ",
+        "JM"
+      ],
       "count": 5,
       "highImpact": 5
     },
     {
       "slug": "noridian-healthcare-solutions",
+      "name": "Noridian Healthcare Solutions, LLC",
       "shortName": "Noridian Healthcare Solutions",
+      "jurisdictions": [
+        "JE",
+        "JF"
+      ],
       "count": 4,
       "highImpact": 1
     },
     {
       "slug": "wps-insurance-corporation",
+      "name": "WPS Insurance Corporation",
       "shortName": "WPS",
+      "jurisdictions": [
+        "J5",
+        "J8"
+      ],
       "count": 4,
       "highImpact": 3
     },
     {
       "slug": "national-government-services",
+      "name": "National Government Services, Inc.",
       "shortName": "National Government Services",
+      "jurisdictions": [
+        "JK",
+        "J6"
+      ],
       "count": 1,
       "highImpact": 0
     }

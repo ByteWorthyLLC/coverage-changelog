@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import he from 'he'
 import {
   getArticleRevisionHistory,
   getDocsSpecVersion,
@@ -13,12 +14,15 @@ import {
   getUpdatePeriod,
 } from './cms-api'
 import { buildCoverageDataset, type LocalDetailBundle } from './intelligence'
-import type { CoverageDataset, CoverageUpdatePeriod } from '../lib/types'
+import { resolveContractorMeta } from './contractors'
+import type { CoverageDataset, CoverageEntry, CoverageUpdatePeriod } from '../lib/types'
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const publicDir = path.join(projectRoot, 'public')
 const dataDir = path.join(publicDir, 'data')
+const contractorsDataDir = path.join(dataDir, 'contractors')
 const briefDir = path.join(publicDir, 'briefs')
+const feedsDir = path.join(publicDir, 'feeds')
 const latestDatasetPath = path.join(dataDir, 'latest.json')
 const publicSiteUrl = 'https://byteworthyllc.github.io/coverage-changelog/'
 
@@ -39,12 +43,7 @@ function formatWindowLabel(beginDate: string, endDate: string): string {
 }
 
 function escapeHtml(value: string): string {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;')
+  return he.encode(value, { useNamedReferences: false })
 }
 
 function escapeCsv(value: unknown): string {
@@ -84,11 +83,219 @@ async function safeData<T>(label: string, operation: Promise<{ data?: T[] }>): P
   }
 }
 
-async function writeArtifacts(dataset: CoverageDataset): Promise<void> {
-  await mkdir(dataDir, { recursive: true })
-  await mkdir(briefDir, { recursive: true })
+interface BriefRenderInput {
+  title: string
+  subtitle: string
+  generatedAt: string
+  windowLabel: string
+  sections: Array<{ heading: string; items: string[] }>
+  bullets: string[]
+  publicUrl: string
+}
 
-  const feed = dataset.entries.map((entry) => ({
+function renderBriefHtml(input: BriefRenderInput): string {
+  const { title, subtitle, generatedAt, windowLabel, sections, bullets, publicUrl } = input
+
+  const sectionMarkup = sections
+    .map(
+      (section) => `
+        <tr>
+          <td style="padding:24px 24px 4px 24px;">
+            <h2 style="margin:0 0 12px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;font-size:18px;font-weight:700;color:#0f172a;letter-spacing:-0.01em;">
+              ${escapeHtml(section.heading)}
+            </h2>
+            <ul style="margin:0;padding:0 0 12px 18px;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;font-size:15px;line-height:1.6;">
+              ${section.items
+                .map((item) => `<li style="margin:0 0 8px 0;">${escapeHtml(item)}</li>`)
+                .join('')}
+            </ul>
+          </td>
+        </tr>`,
+    )
+    .join('\n')
+
+  const bulletsMarkup = bullets.length
+    ? `
+        <tr>
+          <td style="padding:0 24px 12px 24px;">
+            <p style="margin:0 0 8px 0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#64748b;">Snapshot</p>
+            <ul style="margin:0;padding:0 0 12px 18px;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;font-size:15px;line-height:1.6;">
+              ${bullets.map((bullet) => `<li style="margin:0 0 6px 0;">${escapeHtml(bullet)}</li>`).join('')}
+            </ul>
+          </td>
+        </tr>`
+    : ''
+
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <meta name="supported-color-schemes" content="light" />
+    <title>${escapeHtml(title)}</title>
+  </head>
+  <body style="margin:0;padding:0;background:#fafafa;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fafafa;padding:24px 12px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#ffffff;border:1px solid #e5e7eb;border-radius:8px;border-collapse:separate;">
+            <tr>
+              <td style="padding:24px 24px 8px 24px;">
+                <p style="margin:0 0 8px 0;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#64748b;">Coverage Changelog</p>
+                <h1 style="margin:0 0 12px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,sans-serif;font-size:24px;font-weight:600;color:#0f172a;letter-spacing:-0.02em;">
+                  ${escapeHtml(title)}
+                </h1>
+                <p style="margin:0 0 4px 0;color:#475569;font-size:15px;line-height:1.5;">${escapeHtml(subtitle)}</p>
+                <p style="margin:0;color:#64748b;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;">
+                  Window: ${escapeHtml(windowLabel)}
+                </p>
+              </td>
+            </tr>
+            ${bulletsMarkup}
+            ${sectionMarkup}
+            <tr>
+              <td style="padding:16px 24px 24px 24px;border-top:1px solid #e5e7eb;">
+                <p style="margin:0 0 8px 0;color:#475569;font-size:13px;line-height:1.5;">
+                  Source: <a href="${escapeHtml(publicUrl)}" style="color:#2563eb;text-decoration:none;">byteworthyllc.github.io/coverage-changelog</a>
+                </p>
+                <p style="margin:0;color:#94a3b8;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;">
+                  Generated ${escapeHtml(generatedAt)} &middot; Public CMS data only &middot; No PHI
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`
+}
+
+interface RssRenderInput {
+  title: string
+  description: string
+  link: string
+  lastBuildDate: string
+  entries: CoverageEntry[]
+}
+
+function renderRssFeed(input: RssRenderInput): string {
+  const { title, description, link, lastBuildDate, entries } = input
+  const items = entries
+    .map(
+      (entry) => `
+    <item>
+      <title>${escapeHtml(`${entry.displayId}: ${entry.title}`)}</title>
+      <link>${escapeHtml(entry.detailUrl)}</link>
+      <guid isPermaLink="false">${escapeHtml(entry.recordId)}</guid>
+      <pubDate>${escapeHtml(toRfc822(lastBuildDate))}</pubDate>
+      <category>${escapeHtml(entry.impact)}</category>
+      <description>${escapeHtml(entry.summary)}</description>
+    </item>`,
+    )
+    .join('')
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>${escapeHtml(title)}</title>
+    <link>${escapeHtml(link)}</link>
+    <description>${escapeHtml(description)}</description>
+    <lastBuildDate>${escapeHtml(toRfc822(lastBuildDate))}</lastBuildDate>
+    <language>en-us</language>${items}
+  </channel>
+</rss>`
+}
+
+interface OgRenderInput {
+  total: number
+  highImpact: number
+  contractors: number
+  windowLabel: string
+}
+
+function renderOgImage(input: OgRenderInput): string {
+  const { total, highImpact, contractors, windowLabel } = input
+  const dotMatrix = Array.from({ length: 26 }, (_, row) =>
+    Array.from({ length: 50 }, (_, col) => `<circle cx="${24 + col * 24}" cy="${24 + row * 24}" r="1.2" fill="#E5E7EB" />`).join(''),
+  ).join('')
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Coverage Changelog social card">
+  <rect width="1200" height="630" fill="#FAFAFA" />
+  <g aria-hidden="true">${dotMatrix}</g>
+  <g transform="translate(72,80)">
+    <text x="0" y="0" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="18" letter-spacing="2" fill="#64748B" font-weight="600">COVERAGE CHANGELOG</text>
+    <text x="0" y="84" font-family="Inter, system-ui, sans-serif" font-size="64" font-weight="600" fill="#0F172A" letter-spacing="-1.5">CMS coverage changes,</text>
+    <text x="0" y="156" font-family="Inter, system-ui, sans-serif" font-size="64" font-weight="600" fill="#0F172A" letter-spacing="-1.5">ranked for Monday.</text>
+    <text x="0" y="220" font-family="Inter, system-ui, sans-serif" font-size="22" fill="#475569">${escapeHtml(windowLabel)}</text>
+  </g>
+  <g transform="translate(72,360)">
+    <g>
+      <rect width="320" height="170" rx="12" fill="#FFFFFF" stroke="#E5E7EB" />
+      <text x="24" y="56" font-family="Inter, system-ui, sans-serif" font-size="56" font-weight="700" fill="#0F172A">${total}</text>
+      <text x="24" y="92" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="14" letter-spacing="2" fill="#64748B" font-weight="600">UPDATES</text>
+      <text x="24" y="138" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#475569">in current window</text>
+    </g>
+    <g transform="translate(360,0)">
+      <rect width="320" height="170" rx="12" fill="#FFFFFF" stroke="#E5E7EB" />
+      <text x="24" y="56" font-family="Inter, system-ui, sans-serif" font-size="56" font-weight="700" fill="#2563EB">${highImpact}</text>
+      <text x="24" y="92" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="14" letter-spacing="2" fill="#64748B" font-weight="600">HIGH IMPACT</text>
+      <text x="24" y="138" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#475569">priority review</text>
+    </g>
+    <g transform="translate(720,0)">
+      <rect width="320" height="170" rx="12" fill="#FFFFFF" stroke="#E5E7EB" />
+      <text x="24" y="56" font-family="Inter, system-ui, sans-serif" font-size="56" font-weight="700" fill="#0F172A">${contractors}</text>
+      <text x="24" y="92" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="14" letter-spacing="2" fill="#64748B" font-weight="600">CONTRACTORS</text>
+      <text x="24" y="138" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#475569">MAC footprints</text>
+    </g>
+  </g>
+  <g transform="translate(72,580)">
+    <text font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" letter-spacing="1.5" fill="#94A3B8">BYTEWORTHYLLC.GITHUB.IO/COVERAGE-CHANGELOG &middot; FREE &middot; OPEN SOURCE &middot; MIT</text>
+  </g>
+</svg>`
+}
+
+function renderEntriesCsv(entries: CoverageEntry[]): string {
+  const header = [
+    'record_id',
+    'display_id',
+    'document_type',
+    'source',
+    'impact',
+    'impact_score',
+    'updated_on',
+    'effective_date',
+    'contractor',
+    'tags',
+    'title',
+    'summary',
+    'cms_url',
+  ]
+  const rows = [
+    header,
+    ...entries.map((entry) => [
+      entry.recordId,
+      entry.displayId,
+      entry.docType,
+      entry.source,
+      entry.impact,
+      entry.impactScore,
+      entry.updatedOn,
+      entry.effectiveDate ?? '',
+      entry.contractorName ?? '',
+      entry.tags.join('; '),
+      entry.title,
+      entry.summary,
+      entry.detailUrl,
+    ]),
+  ]
+  return rows.map((row) => row.map(escapeCsv).join(',')).join('\n')
+}
+
+function feedEntryFor(entry: CoverageEntry) {
+  return {
     recordId: entry.recordId,
     displayId: entry.displayId,
     docType: entry.docType,
@@ -100,34 +307,79 @@ async function writeArtifacts(dataset: CoverageDataset): Promise<void> {
     tags: entry.tags,
     summary: entry.summary,
     detailUrl: entry.detailUrl,
-  }))
+  }
+}
+
+async function writeArtifacts(dataset: CoverageDataset): Promise<void> {
+  await mkdir(dataDir, { recursive: true })
+  await mkdir(contractorsDataDir, { recursive: true })
+  await mkdir(briefDir, { recursive: true })
+  await mkdir(feedsDir, { recursive: true })
+
+  const feed = dataset.entries.map(feedEntryFor)
   const highImpactFeed = feed.filter((entry) => entry.impact === 'high')
-  const contractors = dataset.entries.reduce<Record<string, typeof feed>>((acc, entry) => {
-    const key = entry.contractorName ?? 'National coverage'
-    acc[key] = acc[key] ?? []
-    acc[key].push({
-      recordId: entry.recordId,
-      displayId: entry.displayId,
-      docType: entry.docType,
-      source: entry.source,
-      title: entry.title,
-      updatedOn: entry.updatedOn,
-      effectiveDate: entry.effectiveDate,
-      impact: entry.impact,
-      tags: entry.tags,
-      summary: entry.summary,
-      detailUrl: entry.detailUrl,
-    })
+
+  const entriesBySlug = dataset.entries.reduce<Record<string, { meta: ReturnType<typeof resolveContractorMeta>; rawNames: Set<string>; entries: CoverageEntry[] }>>((acc, entry) => {
+    const rawName = entry.contractorName ?? 'National coverage'
+    const meta = resolveContractorMeta(rawName)
+    if (!acc[meta.slug]) {
+      acc[meta.slug] = { meta, rawNames: new Set(), entries: [] }
+    }
+    acc[meta.slug].rawNames.add(rawName)
+    acc[meta.slug].entries.push(entry)
     return acc
   }, {})
-  const contractorFeed = Object.entries(contractors)
-    .map(([name, entries]) => ({
-      name,
-      count: entries.length,
-      highImpact: entries.filter((entry) => entry.impact === 'high').length,
-      entries,
-    }))
+
+  const contractorSlices = Object.values(entriesBySlug)
+    .map((bucket) => {
+      const sortedEntries = [...bucket.entries].sort(
+        (left, right) => right.impactScore - left.impactScore || right.updatedSort.localeCompare(left.updatedSort),
+      )
+      return {
+        meta: bucket.meta,
+        name: bucket.meta.longName,
+        rawNames: Array.from(bucket.rawNames).sort(),
+        count: sortedEntries.length,
+        highImpact: sortedEntries.filter((entry) => entry.impact === 'high').length,
+        coding: sortedEntries.filter((entry) => entry.tags.includes('coding')).length,
+        criteria: sortedEntries.filter((entry) => entry.tags.includes('coverage criteria')).length,
+        retirement: sortedEntries.filter((entry) => entry.tags.includes('retirement')).length,
+        entries: sortedEntries,
+      }
+    })
     .sort((left, right) => right.count - left.count || left.name.localeCompare(right.name))
+
+  const contractorFeed = contractorSlices.map((slice) => ({
+    name: slice.name,
+    slug: slice.meta.slug,
+    shortName: slice.meta.shortName,
+    jurisdictions: slice.meta.jurisdictions,
+    count: slice.count,
+    highImpact: slice.highImpact,
+    coding: slice.coding,
+    criteria: slice.criteria,
+    retirement: slice.retirement,
+    feeds: {
+      json: `data/contractors/${slice.meta.slug}.json`,
+      rss: `feeds/${slice.meta.slug}.rss.xml`,
+      csv: `feeds/${slice.meta.slug}.csv`,
+      brief: `briefs/${slice.meta.slug}.html`,
+    },
+    entries: slice.entries.map(feedEntryFor),
+  }))
+
+  const contractorIndex = {
+    generatedAt: dataset.generatedAt,
+    updatePeriod: dataset.updatePeriod,
+    contractors: contractorSlices.map((slice) => ({
+      slug: slice.meta.slug,
+      name: slice.name,
+      shortName: slice.meta.shortName,
+      jurisdictions: slice.meta.jurisdictions,
+      count: slice.count,
+      highImpact: slice.highImpact,
+    })),
+  }
   const queueDefinitions = [
     {
       id: 'coding-review',
@@ -191,49 +443,24 @@ async function writeArtifacts(dataset: CoverageDataset): Promise<void> {
       feed: 'data/feed.json',
       highImpact: 'data/high-impact.json',
       contractors: 'data/contractors.json',
+      contractorIndex: 'data/contractors/index.json',
       queues: 'data/queues.json',
       csv: 'data/feed.csv',
       ndjson: 'data/feed.ndjson',
       markdownBrief: 'briefs/latest.md',
       htmlBrief: 'briefs/latest.html',
+      ogImage: 'og-image.svg',
       rss: 'rss.xml',
     },
+    contractors: contractorSlices.map((slice) => ({
+      slug: slice.meta.slug,
+      shortName: slice.meta.shortName,
+      count: slice.count,
+      highImpact: slice.highImpact,
+    })),
   }
 
-  const csvRows = [
-    [
-      'record_id',
-      'display_id',
-      'document_type',
-      'source',
-      'impact',
-      'impact_score',
-      'updated_on',
-      'effective_date',
-      'contractor',
-      'tags',
-      'title',
-      'summary',
-      'cms_url',
-    ],
-    ...dataset.entries.map((entry) => [
-      entry.recordId,
-      entry.displayId,
-      entry.docType,
-      entry.source,
-      entry.impact,
-      entry.impactScore,
-      entry.updatedOn,
-      entry.effectiveDate ?? '',
-      entry.contractorName ?? '',
-      entry.tags.join('; '),
-      entry.title,
-      entry.summary,
-      entry.detailUrl,
-    ]),
-  ]
-    .map((row) => row.map(escapeCsv).join(','))
-    .join('\n')
+  const csvRows = renderEntriesCsv(dataset.entries)
 
   const ndjson = dataset.entries.map((entry) => JSON.stringify(entry)).join('\n')
 
@@ -254,74 +481,23 @@ async function writeArtifacts(dataset: CoverageDataset): Promise<void> {
     ]),
   ].join('\n')
 
-  const htmlSections = dataset.brief.sections
-    .map(
-      (section) => `
-        <section>
-          <h2>${escapeHtml(section.heading)}</h2>
-          <ul>
-            ${section.items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
-          </ul>
-        </section>
-      `,
-    )
-    .join('\n')
+  const html = renderBriefHtml({
+    title: dataset.brief.title,
+    subtitle: dataset.brief.subtitle,
+    generatedAt: dataset.generatedAt,
+    windowLabel: dataset.updatePeriod.label,
+    sections: dataset.brief.sections,
+    bullets: dataset.brief.bullets,
+    publicUrl: publicSiteUrl,
+  })
 
-  const html = `<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${escapeHtml(dataset.brief.title)}</title>
-    <style>
-      body { margin: 0; font-family: Inter, system-ui, sans-serif; background: #fafafa; color: #0f172a; }
-      main { max-width: 880px; margin: 0 auto; padding: 40px 20px 72px; }
-      h1, h2 { letter-spacing: -0.02em; }
-      .eyebrow { font-family: 'JetBrains Mono', ui-monospace, monospace; letter-spacing: 0.12em; text-transform: uppercase; color: #64748b; font-size: 12px; }
-      .hero, section { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 24px; box-shadow: 0 24px 48px rgba(15, 23, 42, 0.06); margin-top: 16px; }
-      ul { padding-left: 18px; }
-      li { margin-top: 10px; line-height: 1.6; }
-      a { color: #2563eb; }
-    </style>
-  </head>
-  <body>
-    <main>
-      <section class="hero">
-        <p class="eyebrow">Coverage Changelog</p>
-        <h1>${escapeHtml(dataset.brief.title)}</h1>
-        <p>${escapeHtml(dataset.brief.subtitle)}</p>
-        <p>Generated: ${escapeHtml(dataset.generatedAt)}</p>
-      </section>
-      ${htmlSections}
-    </main>
-  </body>
-</html>`
-
-  const rssItems = dataset.entries
-    .slice(0, 25)
-    .map(
-      (entry) => `
-    <item>
-      <title>${escapeHtml(`${entry.displayId}: ${entry.title}`)}</title>
-      <link>${escapeHtml(entry.detailUrl)}</link>
-      <guid isPermaLink="false">${escapeHtml(entry.recordId)}</guid>
-      <pubDate>${escapeHtml(toRfc822(dataset.generatedAt))}</pubDate>
-      <category>${escapeHtml(entry.impact)}</category>
-      <description>${escapeHtml(entry.summary)}</description>
-    </item>`,
-    )
-    .join('')
-
-  const rss = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
-  <channel>
-    <title>Coverage Changelog</title>
-    <link>${publicSiteUrl}</link>
-    <description>Free CMS coverage policy updates ranked by likely operational impact.</description>
-    <lastBuildDate>${escapeHtml(toRfc822(dataset.generatedAt))}</lastBuildDate>
-    <language>en-us</language>${rssItems}
-  </channel>
-</rss>`
+  const rss = renderRssFeed({
+    title: 'Coverage Changelog',
+    description: 'Free CMS coverage policy updates ranked by likely operational impact.',
+    link: publicSiteUrl,
+    lastBuildDate: dataset.generatedAt,
+    entries: dataset.entries.slice(0, 25),
+  })
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -337,6 +513,7 @@ async function writeArtifacts(dataset: CoverageDataset): Promise<void> {
   await writeFile(path.join(dataDir, 'feed.json'), `${JSON.stringify(feed, null, 2)}\n`)
   await writeFile(path.join(dataDir, 'high-impact.json'), `${JSON.stringify(highImpactFeed, null, 2)}\n`)
   await writeFile(path.join(dataDir, 'contractors.json'), `${JSON.stringify(contractorFeed, null, 2)}\n`)
+  await writeFile(path.join(contractorsDataDir, 'index.json'), `${JSON.stringify(contractorIndex, null, 2)}\n`)
   await writeFile(path.join(dataDir, 'queues.json'), `${JSON.stringify(queues, null, 2)}\n`)
   await writeFile(path.join(dataDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`)
   await writeFile(path.join(dataDir, 'feed.csv'), `${csvRows}\n`)
@@ -347,6 +524,96 @@ async function writeArtifacts(dataset: CoverageDataset): Promise<void> {
   await writeFile(path.join(publicDir, 'sitemap.xml'), sitemap)
   await writeFile(path.join(publicDir, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${publicSiteUrl}sitemap.xml\n`)
   await writeFile(path.join(publicDir, '.nojekyll'), '')
+
+  await Promise.all(
+    contractorSlices.map(async (slice) => {
+      const slug = slice.meta.slug
+      const sliceJson = {
+        generatedAt: dataset.generatedAt,
+        cmsApiVersion: dataset.cmsApiVersion,
+        updatePeriod: dataset.updatePeriod,
+        contractor: {
+          slug,
+          name: slice.name,
+          shortName: slice.meta.shortName,
+          longName: slice.meta.longName,
+          jurisdictions: slice.meta.jurisdictions,
+        },
+        stats: {
+          total: slice.count,
+          highImpact: slice.highImpact,
+          coding: slice.coding,
+          criteria: slice.criteria,
+          retirement: slice.retirement,
+        },
+        entries: slice.entries.map(feedEntryFor),
+      }
+
+      const sliceRss = renderRssFeed({
+        title: `Coverage Changelog · ${slice.meta.shortName}`,
+        description: `CMS coverage updates for ${slice.meta.longName}.`,
+        link: `${publicSiteUrl}?contractor=${slug}`,
+        lastBuildDate: dataset.generatedAt,
+        entries: slice.entries.slice(0, 25),
+      })
+
+      const sliceCsv = renderEntriesCsv(slice.entries)
+
+      const briefSections = [
+        {
+          heading: 'High-impact updates',
+          items: slice.entries
+            .filter((entry) => entry.impact === 'high')
+            .slice(0, 5)
+            .map((entry) => `${entry.displayId}: ${entry.title} — ${entry.summary}`),
+        },
+        {
+          heading: 'Coding flags',
+          items: slice.entries
+            .filter((entry) => entry.tags.includes('coding'))
+            .slice(0, 5)
+            .map((entry) => `${entry.displayId}: ${entry.title}`),
+        },
+        {
+          heading: 'Effective-date watch',
+          items: slice.entries
+            .filter((entry) => entry.tags.includes('effective date') || Boolean(entry.effectiveDate))
+            .slice(0, 5)
+            .map((entry) => `${entry.displayId}: effective ${entry.effectiveDate ?? 'TBD'} — ${entry.title}`),
+        },
+      ].filter((section) => section.items.length > 0)
+
+      const sliceBrief = renderBriefHtml({
+        title: `${slice.meta.shortName} coverage update brief`,
+        subtitle: `${slice.count} updates this window · ${slice.highImpact} high-impact.`,
+        generatedAt: dataset.generatedAt,
+        windowLabel: dataset.updatePeriod.label,
+        bullets: [
+          `${slice.count} updates in window`,
+          `${slice.highImpact} high-impact`,
+          `${slice.coding} coding-related`,
+          `${slice.criteria} coverage-criteria`,
+        ],
+        sections: briefSections,
+        publicUrl: `${publicSiteUrl}?contractor=${slug}`,
+      })
+
+      await Promise.all([
+        writeFile(path.join(contractorsDataDir, `${slug}.json`), `${JSON.stringify(sliceJson, null, 2)}\n`),
+        writeFile(path.join(feedsDir, `${slug}.rss.xml`), sliceRss),
+        writeFile(path.join(feedsDir, `${slug}.csv`), `${sliceCsv}\n`),
+        writeFile(path.join(briefDir, `${slug}.html`), sliceBrief),
+      ])
+    }),
+  )
+
+  const ogSvg = renderOgImage({
+    total: dataset.stats.total,
+    highImpact: dataset.stats.highImpact,
+    contractors: dataset.stats.contractors,
+    windowLabel: dataset.updatePeriod.label,
+  })
+  await writeFile(path.join(publicDir, 'og-image.svg'), ogSvg)
 }
 
 async function buildLiveDataset(): Promise<CoverageDataset> {

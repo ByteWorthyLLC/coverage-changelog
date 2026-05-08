@@ -76,3 +76,18 @@ export interface CoverageDataset {
   entries: CoverageEntry[]
   brief: MondayBrief
 }
+
+export interface ContractorIndexEntry {
+  slug: string
+  name: string
+  shortName: string
+  jurisdictions: string[]
+  count: number
+  highImpact: number
+}
+
+export interface ContractorIndex {
+  generatedAt: string
+  updatePeriod: CoverageUpdatePeriod
+  contractors: ContractorIndexEntry[]
+}

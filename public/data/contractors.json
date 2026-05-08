@@ -1,8 +1,22 @@
 [
   {
-    "name": "CGS Administrators, LLC (MAC - Part A, MAC - Part B)",
+    "name": "CGS Administrators, LLC",
+    "slug": "cgs-administrators",
+    "shortName": "CGS Administrators",
+    "jurisdictions": [
+      "J15"
+    ],
     "count": 8,
     "highImpact": 0,
+    "coding": 0,
+    "criteria": 0,
+    "retirement": 0,
+    "feeds": {
+      "json": "data/contractors/cgs-administrators.json",
+      "rss": "feeds/cgs-administrators.rss.xml",
+      "csv": "feeds/cgs-administrators.csv",
+      "brief": "briefs/cgs-administrators.html"
+    },
     "entries": [
       {
         "recordId": "A60185-v11",
@@ -127,9 +141,23 @@
     ]
   },
   {
-    "name": "National coverage",
+    "name": "National coverage (CMS)",
+    "slug": "national-coverage",
+    "shortName": "National coverage",
+    "jurisdictions": [
+      "NCD"
+    ],
     "count": 8,
     "highImpact": 0,
+    "coding": 0,
+    "criteria": 0,
+    "retirement": 0,
+    "feeds": {
+      "json": "data/contractors/national-coverage.json",
+      "rss": "feeds/national-coverage.rss.xml",
+      "csv": "feeds/national-coverage.csv",
+      "brief": "briefs/national-coverage.html"
+    },
     "entries": [
       {
         "recordId": "240.9-v1",
@@ -253,9 +281,123 @@
     ]
   },
   {
-    "name": "Noridian Healthcare Solutions, LLC (MAC - Part A, MAC - Part B)",
+    "name": "Palmetto GBA",
+    "slug": "palmetto-gba",
+    "shortName": "Palmetto GBA",
+    "jurisdictions": [
+      "JJ",
+      "JM"
+    ],
+    "count": 5,
+    "highImpact": 5,
+    "coding": 4,
+    "criteria": 0,
+    "retirement": 0,
+    "feeds": {
+      "json": "data/contractors/palmetto-gba.json",
+      "rss": "feeds/palmetto-gba.rss.xml",
+      "csv": "feeds/palmetto-gba.csv",
+      "brief": "briefs/palmetto-gba.html"
+    },
+    "entries": [
+      {
+        "recordId": "A58559-v35",
+        "displayId": "A58559",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Independent Diagnostic Testing Facilities (IDTF)",
+        "updatedOn": "05/01/2026",
+        "effectiveDate": "01/01/2026",
+        "impact": "high",
+        "tags": [
+          "coding",
+          "effective date"
+        ],
+        "summary": "High-signal revision from CMS notes: Under Article Text – Table: CPT/HCPCS Codes and CPT/HCPCS Codes Group 1: Codes added 70471. For 70471, under Article Text – Table: Supervising Physician Qualifications added Board Certified* Radiologist or Neurologist...",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=58559&ver=35"
+      },
+      {
+        "recordId": "A54767-v71",
+        "displayId": "A54767",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Medicare Preventive Coverage for Certain Vaccines",
+        "updatedOn": "05/01/2026",
+        "effectiveDate": "04/20/2026",
+        "impact": "high",
+        "tags": [
+          "coding",
+          "effective date"
+        ],
+        "summary": "High-signal revision from CMS notes: Under CMS National Coverage Policy added the following regulation: CMS Internet-Only Manual, Pub. 100-02, Medicare Benefit Policy Manual , Chapter 15, §50.4.4.2 Immunizations. Under Article Text formatting changes wer...",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=54767&ver=71"
+      },
+      {
+        "recordId": "A54799-v67",
+        "displayId": "A54799",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Urine Drug Testing",
+        "updatedOn": "05/01/2026",
+        "effectiveDate": "06/01/2026",
+        "impact": "high",
+        "tags": [
+          "coding"
+        ],
+        "summary": "High-signal revision from CMS notes: Under ICD-10-CM Codes that Support Medical Necessity Group 1: Codes added F11.120, F12.10, F12.20, F12.21, F13.10, F13.20, F13.21, F14.10, F14.120, F14.20, F14.21, F15.10, F15.20, F15.21, F19.10 and F19.21.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=54799&ver=67"
+      },
+      {
+        "recordId": "A59350-v27",
+        "displayId": "A59350",
+        "docType": "Article",
+        "source": "local",
+        "title": "Billing and Coding: Radiation Therapies",
+        "updatedOn": "04/28/2026",
+        "effectiveDate": "04/01/2026",
+        "impact": "high",
+        "tags": [
+          "effective date"
+        ],
+        "summary": "High-signal revision from CMS notes: The effective date for revision 9 should be retroactive effective for dates of service on or after 1/1/26 not 4/1/26.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=59350&ver=27"
+      },
+      {
+        "recordId": "A53066-v97",
+        "displayId": "A53066",
+        "docType": "Article",
+        "source": "local",
+        "title": "Self-Administered Drug Exclusion List:",
+        "updatedOn": "04/27/2026",
+        "effectiveDate": "06/01/2026",
+        "impact": "high",
+        "tags": [
+          "coding"
+        ],
+        "summary": "High-signal revision from CMS notes: Under Excluded CPT/HCPCS Codes – Table Format added C9399, J3490, J3590 for Nemluvio (nemolizumab-ilto) and deleted the asterisk for Skyrizi™ (risankizumab-rzaa) using CPT codes C9399, J3490, J3590.",
+        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=53066&ver=97"
+      }
+    ]
+  },
+  {
+    "name": "Noridian Healthcare Solutions, LLC",
+    "slug": "noridian-healthcare-solutions",
+    "shortName": "Noridian Healthcare Solutions",
+    "jurisdictions": [
+      "JE",
+      "JF"
+    ],
     "count": 4,
     "highImpact": 1,
+    "coding": 1,
+    "criteria": 0,
+    "retirement": 0,
+    "feeds": {
+      "json": "data/contractors/noridian-healthcare-solutions.json",
+      "rss": "feeds/noridian-healthcare-solutions.rss.xml",
+      "csv": "feeds/noridian-healthcare-solutions.csv",
+      "brief": "briefs/noridian-healthcare-solutions.html"
+    },
     "entries": [
       {
         "recordId": "A55001-v69",
@@ -321,77 +463,24 @@
     ]
   },
   {
-    "name": "Palmetto GBA (MAC - Part A, MAC - Part B)",
-    "count": 4,
-    "highImpact": 4,
-    "entries": [
-      {
-        "recordId": "A54767-v71",
-        "displayId": "A54767",
-        "docType": "Article",
-        "source": "local",
-        "title": "Billing and Coding: Medicare Preventive Coverage for Certain Vaccines",
-        "updatedOn": "05/01/2026",
-        "effectiveDate": "04/20/2026",
-        "impact": "high",
-        "tags": [
-          "coding",
-          "effective date"
-        ],
-        "summary": "High-signal revision from CMS notes: Under CMS National Coverage Policy added the following regulation: CMS Internet-Only Manual, Pub. 100-02, Medicare Benefit Policy Manual , Chapter 15, §50.4.4.2 Immunizations. Under Article Text formatting changes wer...",
-        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=54767&ver=71"
-      },
-      {
-        "recordId": "A54799-v67",
-        "displayId": "A54799",
-        "docType": "Article",
-        "source": "local",
-        "title": "Billing and Coding: Urine Drug Testing",
-        "updatedOn": "05/01/2026",
-        "effectiveDate": "06/01/2026",
-        "impact": "high",
-        "tags": [
-          "coding"
-        ],
-        "summary": "High-signal revision from CMS notes: Under ICD-10-CM Codes that Support Medical Necessity Group 1: Codes added F11.120, F12.10, F12.20, F12.21, F13.10, F13.20, F13.21, F14.10, F14.120, F14.20, F14.21, F15.10, F15.20, F15.21, F19.10 and F19.21.",
-        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=54799&ver=67"
-      },
-      {
-        "recordId": "A59350-v27",
-        "displayId": "A59350",
-        "docType": "Article",
-        "source": "local",
-        "title": "Billing and Coding: Radiation Therapies",
-        "updatedOn": "04/28/2026",
-        "effectiveDate": "04/01/2026",
-        "impact": "high",
-        "tags": [
-          "effective date"
-        ],
-        "summary": "High-signal revision from CMS notes: The effective date for revision 9 should be retroactive effective for dates of service on or after 1/1/26 not 4/1/26.",
-        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=59350&ver=27"
-      },
-      {
-        "recordId": "A53066-v97",
-        "displayId": "A53066",
-        "docType": "Article",
-        "source": "local",
-        "title": "Self-Administered Drug Exclusion List:",
-        "updatedOn": "04/27/2026",
-        "effectiveDate": "06/01/2026",
-        "impact": "high",
-        "tags": [
-          "coding"
-        ],
-        "summary": "High-signal revision from CMS notes: Under Excluded CPT/HCPCS Codes – Table Format added C9399, J3490, J3590 for Nemluvio (nemolizumab-ilto) and deleted the asterisk for Skyrizi™ (risankizumab-rzaa) using CPT codes C9399, J3490, J3590.",
-        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=53066&ver=97"
-      }
-    ]
-  },
-  {
-    "name": "WPS Insurance Corporation (MAC - Part A, MAC - Part B)",
+    "name": "WPS Insurance Corporation",
+    "slug": "wps-insurance-corporation",
+    "shortName": "WPS",
+    "jurisdictions": [
+      "J5",
+      "J8"
+    ],
     "count": 4,
     "highImpact": 3,
+    "coding": 3,
+    "criteria": 0,
+    "retirement": 0,
+    "feeds": {
+      "json": "data/contractors/wps-insurance-corporation.json",
+      "rss": "feeds/wps-insurance-corporation.rss.xml",
+      "csv": "feeds/wps-insurance-corporation.csv",
+      "brief": "briefs/wps-insurance-corporation.html"
+    },
     "entries": [
       {
         "recordId": "A57944-v25",
@@ -456,9 +545,24 @@
     ]
   },
   {
-    "name": "National Government Services, Inc. (MAC - Part A, MAC - Part B)",
+    "name": "National Government Services, Inc.",
+    "slug": "national-government-services",
+    "shortName": "National Government Services",
+    "jurisdictions": [
+      "JK",
+      "J6"
+    ],
     "count": 1,
     "highImpact": 0,
+    "coding": 0,
+    "criteria": 0,
+    "retirement": 0,
+    "feeds": {
+      "json": "data/contractors/national-government-services.json",
+      "rss": "feeds/national-government-services.rss.xml",
+      "csv": "feeds/national-government-services.csv",
+      "brief": "briefs/national-government-services.html"
+    },
     "entries": [
       {
         "recordId": "L39036-v23",
@@ -474,29 +578,6 @@
         ],
         "summary": "Lower-urgency correction or cleanup: Corrected link for #31 in the bibliography.",
         "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=39036&ver=23"
-      }
-    ]
-  },
-  {
-    "name": "Palmetto GBA (MAC - Part B)",
-    "count": 1,
-    "highImpact": 1,
-    "entries": [
-      {
-        "recordId": "A58559-v35",
-        "displayId": "A58559",
-        "docType": "Article",
-        "source": "local",
-        "title": "Billing and Coding: Independent Diagnostic Testing Facilities (IDTF)",
-        "updatedOn": "05/01/2026",
-        "effectiveDate": "01/01/2026",
-        "impact": "high",
-        "tags": [
-          "coding",
-          "effective date"
-        ],
-        "summary": "High-signal revision from CMS notes: Under Article Text – Table: CPT/HCPCS Codes and CPT/HCPCS Codes Group 1: Codes added 70471. For 70471, under Article Text – Table: Supervising Physician Qualifications added Board Certified* Radiologist or Neurologist...",
-        "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=58559&ver=35"
       }
     ]
   }

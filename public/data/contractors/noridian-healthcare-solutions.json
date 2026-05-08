@@ -1,0 +1,90 @@
+{
+  "generatedAt": "2026-05-08T15:59:01.794Z",
+  "cmsApiVersion": "1.6",
+  "updatePeriod": {
+    "periodId": 1198,
+    "beginDate": "20260427",
+    "endDate": "20260504",
+    "label": "Apr 27, 2026 to May 4, 2026"
+  },
+  "contractor": {
+    "slug": "noridian-healthcare-solutions",
+    "name": "Noridian Healthcare Solutions, LLC",
+    "shortName": "Noridian Healthcare Solutions",
+    "longName": "Noridian Healthcare Solutions, LLC",
+    "jurisdictions": [
+      "JE",
+      "JF"
+    ]
+  },
+  "stats": {
+    "total": 4,
+    "highImpact": 1,
+    "coding": 1,
+    "criteria": 0,
+    "retirement": 0
+  },
+  "entries": [
+    {
+      "recordId": "A55001-v69",
+      "displayId": "A55001",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Urine Drug Testing",
+      "updatedOn": "04/30/2026",
+      "effectiveDate": "06/01/2026",
+      "impact": "high",
+      "tags": [
+        "coding",
+        "effective date"
+      ],
+      "summary": "High-signal revision from CMS notes: Revision Effective Date: 06/01/2026 Under ICD-10-CM Codes That Support Medical Necessity: Added: F11.120, F12.10, F12.20, F12.21, F13.10, F13.20, F13.21, F14.10, F14.120, F14.20, F14.21, F15.10, F15.20, F15.21, F19.10...",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=55001&ver=69"
+    },
+    {
+      "recordId": "L40255-v6",
+      "displayId": "L40255",
+      "docType": "LCD",
+      "source": "local",
+      "title": "Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices",
+      "updatedOn": "04/29/2026",
+      "effectiveDate": "06/21/2026",
+      "impact": "low",
+      "tags": [
+        "general update"
+      ],
+      "summary": "Lower-urgency correction or cleanup: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=40255&ver=6"
+    },
+    {
+      "recordId": "A60428-v3",
+      "displayId": "A60428",
+      "docType": "Article",
+      "source": "local",
+      "title": "Response to Comments: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices",
+      "updatedOn": "04/29/2026",
+      "effectiveDate": "06/21/2026",
+      "impact": "low",
+      "tags": [
+        "general update"
+      ],
+      "summary": "Lower-urgency correction or cleanup: Response to Comments: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=60428&ver=3"
+    },
+    {
+      "recordId": "A60279-v4",
+      "displayId": "A60279",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices",
+      "updatedOn": "04/29/2026",
+      "effectiveDate": "06/21/2026",
+      "impact": "low",
+      "tags": [
+        "general update"
+      ],
+      "summary": "Lower-urgency correction or cleanup: Billing and Coding: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=60279&ver=4"
+    }
+  ]
+}

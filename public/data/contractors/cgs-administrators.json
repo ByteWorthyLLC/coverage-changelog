@@ -1,0 +1,148 @@
+{
+  "generatedAt": "2026-05-08T15:59:01.794Z",
+  "cmsApiVersion": "1.6",
+  "updatePeriod": {
+    "periodId": 1198,
+    "beginDate": "20260427",
+    "endDate": "20260504",
+    "label": "Apr 27, 2026 to May 4, 2026"
+  },
+  "contractor": {
+    "slug": "cgs-administrators",
+    "name": "CGS Administrators, LLC",
+    "shortName": "CGS Administrators",
+    "longName": "CGS Administrators, LLC",
+    "jurisdictions": [
+      "J15"
+    ]
+  },
+  "stats": {
+    "total": 8,
+    "highImpact": 0,
+    "coding": 0,
+    "criteria": 0,
+    "retirement": 0
+  },
+  "entries": [
+    {
+      "recordId": "A60185-v11",
+      "displayId": "A60185",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Superficial Radiation Therapy (SRT) for the Treatment of Nonmelanoma Skin Cancers (NMSC)",
+      "updatedOn": "04/29/2026",
+      "effectiveDate": "03/01/2026",
+      "impact": "medium",
+      "tags": [
+        "general update"
+      ],
+      "summary": "Meaningful policy or coding update detected: Revision Effective: 03/01/2026 Revision Explanation: - Under Coding Guidance : “A qualified physician for this service is one that has training and expertise that must have been acquired within the framework of an acc...",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=60185&ver=11"
+    },
+    {
+      "recordId": "L35249-v20",
+      "displayId": "L35249",
+      "docType": "LCD",
+      "source": "local",
+      "title": "Nerve Blocks for Peripheral Neuropathy",
+      "updatedOn": "04/29/2026",
+      "effectiveDate": "05/07/2026",
+      "impact": "medium",
+      "tags": [
+        "general update"
+      ],
+      "summary": "Meaningful policy or coding update detected: R14 Revision Effective: 05/07/2026 Revision Explanation: Annual review, no changes were made. 04/29/2026: At this time 21st Century Cures Act will apply to new and revised LCDs that restrict coverage which requires co...",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=35249&ver=20"
+    },
+    {
+      "recordId": "L34195-v28",
+      "displayId": "L34195",
+      "docType": "LCD",
+      "source": "local",
+      "title": "Mohs Micrographic Surgery",
+      "updatedOn": "04/29/2026",
+      "effectiveDate": "05/07/2026",
+      "impact": "medium",
+      "tags": [
+        "general update"
+      ],
+      "summary": "Meaningful policy or coding update detected: R21 Revision Effective: 05/07/2026 Revision Explanation: Annual review, no changes. 04/29/2026: At this time 21st Century Cures Act will apply to new and revised LCDs that restrict coverage which requires comment and...",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=34195&ver=28"
+    },
+    {
+      "recordId": "A57068-v17",
+      "displayId": "A57068",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Ocular Photography - External",
+      "updatedOn": "04/29/2026",
+      "effectiveDate": "05/07/2026",
+      "impact": "low",
+      "tags": [
+        "general update"
+      ],
+      "summary": "Lower-urgency correction or cleanup: Revision Effective: 05/07/2026 Revision Explanation: Annual review, no changes were made.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57068&ver=17"
+    },
+    {
+      "recordId": "A57307-v38",
+      "displayId": "A57307",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Nerve Conduction Studies and Electromyography",
+      "updatedOn": "04/29/2026",
+      "effectiveDate": "05/07/2026",
+      "impact": "low",
+      "tags": [
+        "general update"
+      ],
+      "summary": "Lower-urgency correction or cleanup: Revision Effective: 05/07/2026 Revision Explanation: Annual review, no changes.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57307&ver=38"
+    },
+    {
+      "recordId": "A57663-v14",
+      "displayId": "A57663",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Nerve Blocks for Peripheral Neuropathy",
+      "updatedOn": "04/29/2026",
+      "effectiveDate": "05/07/2026",
+      "impact": "low",
+      "tags": [
+        "general update"
+      ],
+      "summary": "Lower-urgency correction or cleanup: Revision Effective: 05/07/2026 Revision Explanation: Annual review, no changes.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57663&ver=14"
+    },
+    {
+      "recordId": "A56836-v18",
+      "displayId": "A56836",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Mohs Micrographic Surgery",
+      "updatedOn": "04/29/2026",
+      "effectiveDate": "05/07/2026",
+      "impact": "low",
+      "tags": [
+        "administrative correction"
+      ],
+      "summary": "Lower-urgency correction or cleanup: Revision Effective: 05/07/2026 Revision Explanation: Annual review, correction to typographical error.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56836&ver=18"
+    },
+    {
+      "recordId": "L35897-v32",
+      "displayId": "L35897",
+      "docType": "LCD",
+      "source": "local",
+      "title": "Nerve Conduction Studies and Electromyography",
+      "updatedOn": "04/29/2026",
+      "effectiveDate": "05/07/2026",
+      "impact": "low",
+      "tags": [
+        "general update"
+      ],
+      "summary": "Lower-urgency correction or cleanup: Revision 22 Revision Effective: 05/07/2026 Revision Explanation: Annual review, no changes were made.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=35897&ver=32"
+    }
+  ]
+}

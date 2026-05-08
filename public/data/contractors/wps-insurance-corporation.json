@@ -1,0 +1,89 @@
+{
+  "generatedAt": "2026-05-08T15:59:01.794Z",
+  "cmsApiVersion": "1.6",
+  "updatePeriod": {
+    "periodId": 1198,
+    "beginDate": "20260427",
+    "endDate": "20260504",
+    "label": "Apr 27, 2026 to May 4, 2026"
+  },
+  "contractor": {
+    "slug": "wps-insurance-corporation",
+    "name": "WPS Insurance Corporation",
+    "shortName": "WPS",
+    "longName": "WPS Insurance Corporation",
+    "jurisdictions": [
+      "J5",
+      "J8"
+    ]
+  },
+  "stats": {
+    "total": 4,
+    "highImpact": 3,
+    "coding": 3,
+    "criteria": 0,
+    "retirement": 0
+  },
+  "entries": [
+    {
+      "recordId": "A57944-v25",
+      "displayId": "A57944",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Hypoglossal Nerve Stimulation for Treatment of Obstructive Sleep Apnea",
+      "updatedOn": "05/01/2026",
+      "effectiveDate": "05/07/2026",
+      "impact": "high",
+      "tags": [
+        "coding"
+      ],
+      "summary": "High-signal revision from CMS notes: Posted 05/07/2026 Under Coding Guidelines added reduced services modifier 52 information under Implantation codes. Under CPT/HCPCS Modifiers added 64582, 64583, and 64584 to Group 1 Paragraph . This is effective 01/01...",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=57944&ver=25"
+    },
+    {
+      "recordId": "A56915-v37",
+      "displayId": "A56915",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Urine Drug Testing",
+      "updatedOn": "04/29/2026",
+      "effectiveDate": "06/01/2026",
+      "impact": "high",
+      "tags": [
+        "coding"
+      ],
+      "summary": "High-signal revision from CMS notes: Posted 05/07/2026 Under ICD-10 Codes that Support Medical Necessity Group 1 Codes added F11.120, F12.10, F12.20, F12.21, F13.10, F13.20, F13,21, F14.10, F14.20, F14.21, F14.120, F15.10, F15.20, F15.21, F19.10, F19.21.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=56915&ver=37"
+    },
+    {
+      "recordId": "A59809-v10",
+      "displayId": "A59809",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Botulinum Toxin Injections",
+      "updatedOn": "04/29/2026",
+      "effectiveDate": "04/09/2026",
+      "impact": "high",
+      "tags": [
+        "coding"
+      ],
+      "summary": "High-signal revision from CMS notes: Posted 05/07/2026. Update to revision history posted 04/0/09/2026. Under the ICD-10-CM Codes that Support Medical Necessity section, the group for Paralytic ptosis was removed. Revision effective 04/09/2026.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=59809&ver=10"
+    },
+    {
+      "recordId": "A58473-v11",
+      "displayId": "A58473",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Non-Invasive Fractional Flow Reserve (FFR) for Ischemic Heart Disease",
+      "updatedOn": "04/30/2026",
+      "effectiveDate": "01/01/2024",
+      "impact": "low",
+      "tags": [
+        "general update"
+      ],
+      "summary": "Lower-urgency correction or cleanup: Posted 04/30/2026: biennial review completed 04/30/2026 with no changes made to the article.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=58473&ver=11"
+    }
+  ]
+}

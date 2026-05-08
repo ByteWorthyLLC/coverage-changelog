@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Coverage Changelog &#xB7; Palmetto GBA</title>
+    <link>https://byteworthyllc.github.io/coverage-changelog/?contractor=palmetto-gba</link>
+    <description>CMS coverage updates for Palmetto GBA.</description>
+    <lastBuildDate>Fri, 08 May 2026 15:59:01 GMT</lastBuildDate>
+    <language>en-us</language>
+    <item>
+      <title>A58559: Billing and Coding: Independent Diagnostic Testing Facilities (IDTF)</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=58559&#x26;ver=35</link>
+      <guid isPermaLink="false">A58559-v35</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>high</category>
+      <description>High-signal revision from CMS notes: Under Article Text &#x2013; Table: CPT/HCPCS Codes and CPT/HCPCS Codes Group 1: Codes added 70471. For 70471, under Article Text &#x2013; Table: Supervising Physician Qualifications added Board Certified* Radiologist or Neurologist...</description>
+    </item>
+    <item>
+      <title>A54767: Billing and Coding: Medicare Preventive Coverage for Certain Vaccines</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=54767&#x26;ver=71</link>
+      <guid isPermaLink="false">A54767-v71</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>high</category>
+      <description>High-signal revision from CMS notes: Under CMS National Coverage Policy added the following regulation: CMS Internet-Only Manual, Pub. 100-02, Medicare Benefit Policy Manual , Chapter 15, &#xA7;50.4.4.2 Immunizations. Under Article Text formatting changes wer...</description>
+    </item>
+    <item>
+      <title>A54799: Billing and Coding: Urine Drug Testing</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=54799&#x26;ver=67</link>
+      <guid isPermaLink="false">A54799-v67</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>high</category>
+      <description>High-signal revision from CMS notes: Under ICD-10-CM Codes that Support Medical Necessity Group 1: Codes added F11.120, F12.10, F12.20, F12.21, F13.10, F13.20, F13.21, F14.10, F14.120, F14.20, F14.21, F15.10, F15.20, F15.21, F19.10 and F19.21.</description>
+    </item>
+    <item>
+      <title>A59350: Billing and Coding: Radiation Therapies</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=59350&#x26;ver=27</link>
+      <guid isPermaLink="false">A59350-v27</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>high</category>
+      <description>High-signal revision from CMS notes: The effective date for revision 9 should be retroactive effective for dates of service on or after 1/1/26 not 4/1/26.</description>
+    </item>
+    <item>
+      <title>A53066: Self-Administered Drug Exclusion List:</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=53066&#x26;ver=97</link>
+      <guid isPermaLink="false">A53066-v97</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>high</category>
+      <description>High-signal revision from CMS notes: Under Excluded CPT/HCPCS Codes &#x2013; Table Format added C9399, J3490, J3590 for Nemluvio (nemolizumab-ilto) and deleted the asterisk for Skyrizi&#x2122; (risankizumab-rzaa) using CPT codes C9399, J3490, J3590.</description>
+    </item>
+  </channel>
+</rss>

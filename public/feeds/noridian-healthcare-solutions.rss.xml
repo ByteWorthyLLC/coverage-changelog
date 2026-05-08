@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Coverage Changelog &#xB7; Noridian Healthcare Solutions</title>
+    <link>https://byteworthyllc.github.io/coverage-changelog/?contractor=noridian-healthcare-solutions</link>
+    <description>CMS coverage updates for Noridian Healthcare Solutions, LLC.</description>
+    <lastBuildDate>Fri, 08 May 2026 15:59:01 GMT</lastBuildDate>
+    <language>en-us</language>
+    <item>
+      <title>A55001: Billing and Coding: Urine Drug Testing</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=55001&#x26;ver=69</link>
+      <guid isPermaLink="false">A55001-v69</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>high</category>
+      <description>High-signal revision from CMS notes: Revision Effective Date: 06/01/2026 Under ICD-10-CM Codes That Support Medical Necessity: Added: F11.120, F12.10, F12.20, F12.21, F13.10, F13.20, F13.21, F14.10, F14.120, F14.20, F14.21, F15.10, F15.20, F15.21, F19.10...</description>
+    </item>
+    <item>
+      <title>L40255: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=40255&#x26;ver=6</link>
+      <guid isPermaLink="false">L40255-v6</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>low</category>
+      <description>Lower-urgency correction or cleanup: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices</description>
+    </item>
+    <item>
+      <title>A60428: Response to Comments: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=60428&#x26;ver=3</link>
+      <guid isPermaLink="false">A60428-v3</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>low</category>
+      <description>Lower-urgency correction or cleanup: Response to Comments: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices</description>
+    </item>
+    <item>
+      <title>A60279: Billing and Coding: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=60279&#x26;ver=4</link>
+      <guid isPermaLink="false">A60279-v4</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>low</category>
+      <description>Lower-urgency correction or cleanup: Billing and Coding: Temporary Nontherapeutic Ambulatory Cardiac Monitoring Devices</description>
+    </item>
+  </channel>
+</rss>

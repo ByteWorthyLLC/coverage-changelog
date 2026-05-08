@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Coverage Changelog &#xB7; National coverage</title>
+    <link>https://byteworthyllc.github.io/coverage-changelog/?contractor=national-coverage</link>
+    <description>CMS coverage updates for National coverage (CMS).</description>
+    <lastBuildDate>Fri, 08 May 2026 15:59:01 GMT</lastBuildDate>
+    <language>en-us</language>
+    <item>
+      <title>240.9: Noninvasive Positive Pressure Ventilation (NIPPV) in the Home for the Treatment of Chronic Respiratory Failure (CRF) Consequent to Chronic Obstructive Pulmonary Disease (COPD)</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=380&#x26;ncdver=1</link>
+      <guid isPermaLink="false">240.9-v1</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>medium</category>
+      <description>Updated NCD coding via a new Change Request/Transmittal, no policy changes.</description>
+    </item>
+    <item>
+      <title>220.6.17: Positron Emission Tomography (FDG) for Oncologic Conditions</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=331&#x26;ncdver=4</link>
+      <guid isPermaLink="false">220.6.17-v4</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>medium</category>
+      <description>Updated NCD coding via a new Change Request/Transmittal, no policy changes.</description>
+    </item>
+    <item>
+      <title>160.18: Vagus Nerve Stimulation (VNS)</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=230&#x26;ncdver=3</link>
+      <guid isPermaLink="false">160.18-v3</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>medium</category>
+      <description>Updated NCD coding via a new Change Request/Transmittal, no policy changes.</description>
+    </item>
+    <item>
+      <title>110.18: Aprepitant for Chemotherapy-Induced Emesis</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=309&#x26;ncdver=2</link>
+      <guid isPermaLink="false">110.18-v2</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>medium</category>
+      <description>Updated NCD coding via a new Change Request/Transmittal, no policy changes.</description>
+    </item>
+    <item>
+      <title>90.2: Next Generation Sequencing (NGS)</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=372&#x26;ncdver=2</link>
+      <guid isPermaLink="false">90.2-v2</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>medium</category>
+      <description>Updated NCD coding via a new Change Request/Transmittal, no policy changes.</description>
+    </item>
+    <item>
+      <title>150.13: Percutaneous Image-Guided Lumbar Decompression for Lumbar Spinal Stenosis</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=358&#x26;ncdver=2</link>
+      <guid isPermaLink="false">150.13-v2</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>medium</category>
+      <description>Updated NCD coding via a new Change Request/Transmittal, no policy changes.</description>
+    </item>
+    <item>
+      <title>210.10: Screening for Sexually Transmitted Infections (STIs) and High-Intensity Behavioral Counseling (HIBC) to Prevent STIs</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=352&#x26;ncdver=1</link>
+      <guid isPermaLink="false">210.10-v1</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>medium</category>
+      <description>Updated NCD coding via a new Change Request/Transmittal, no policy changes.</description>
+    </item>
+    <item>
+      <title>110.17: Anti-Cancer Chemotherapy for Colorectal Cancer - RETIRED</title>
+      <link>https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=291&#x26;ncdver=2</link>
+      <guid isPermaLink="false">110.17-v2</guid>
+      <pubDate>Fri, 08 May 2026 15:59:01 GMT</pubDate>
+      <category>low</category>
+      <description>Effective 2/25/2026, this section of the NCD Manual is removed.</description>
+    </item>
+  </channel>
+</rss>

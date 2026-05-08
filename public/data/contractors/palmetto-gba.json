@@ -1,0 +1,106 @@
+{
+  "generatedAt": "2026-05-08T15:59:01.794Z",
+  "cmsApiVersion": "1.6",
+  "updatePeriod": {
+    "periodId": 1198,
+    "beginDate": "20260427",
+    "endDate": "20260504",
+    "label": "Apr 27, 2026 to May 4, 2026"
+  },
+  "contractor": {
+    "slug": "palmetto-gba",
+    "name": "Palmetto GBA",
+    "shortName": "Palmetto GBA",
+    "longName": "Palmetto GBA",
+    "jurisdictions": [
+      "JJ",
+      "JM"
+    ]
+  },
+  "stats": {
+    "total": 5,
+    "highImpact": 5,
+    "coding": 4,
+    "criteria": 0,
+    "retirement": 0
+  },
+  "entries": [
+    {
+      "recordId": "A58559-v35",
+      "displayId": "A58559",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Independent Diagnostic Testing Facilities (IDTF)",
+      "updatedOn": "05/01/2026",
+      "effectiveDate": "01/01/2026",
+      "impact": "high",
+      "tags": [
+        "coding",
+        "effective date"
+      ],
+      "summary": "High-signal revision from CMS notes: Under Article Text – Table: CPT/HCPCS Codes and CPT/HCPCS Codes Group 1: Codes added 70471. For 70471, under Article Text – Table: Supervising Physician Qualifications added Board Certified* Radiologist or Neurologist...",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=58559&ver=35"
+    },
+    {
+      "recordId": "A54767-v71",
+      "displayId": "A54767",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Medicare Preventive Coverage for Certain Vaccines",
+      "updatedOn": "05/01/2026",
+      "effectiveDate": "04/20/2026",
+      "impact": "high",
+      "tags": [
+        "coding",
+        "effective date"
+      ],
+      "summary": "High-signal revision from CMS notes: Under CMS National Coverage Policy added the following regulation: CMS Internet-Only Manual, Pub. 100-02, Medicare Benefit Policy Manual , Chapter 15, §50.4.4.2 Immunizations. Under Article Text formatting changes wer...",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=54767&ver=71"
+    },
+    {
+      "recordId": "A54799-v67",
+      "displayId": "A54799",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Urine Drug Testing",
+      "updatedOn": "05/01/2026",
+      "effectiveDate": "06/01/2026",
+      "impact": "high",
+      "tags": [
+        "coding"
+      ],
+      "summary": "High-signal revision from CMS notes: Under ICD-10-CM Codes that Support Medical Necessity Group 1: Codes added F11.120, F12.10, F12.20, F12.21, F13.10, F13.20, F13.21, F14.10, F14.120, F14.20, F14.21, F15.10, F15.20, F15.21, F19.10 and F19.21.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=54799&ver=67"
+    },
+    {
+      "recordId": "A59350-v27",
+      "displayId": "A59350",
+      "docType": "Article",
+      "source": "local",
+      "title": "Billing and Coding: Radiation Therapies",
+      "updatedOn": "04/28/2026",
+      "effectiveDate": "04/01/2026",
+      "impact": "high",
+      "tags": [
+        "effective date"
+      ],
+      "summary": "High-signal revision from CMS notes: The effective date for revision 9 should be retroactive effective for dates of service on or after 1/1/26 not 4/1/26.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=59350&ver=27"
+    },
+    {
+      "recordId": "A53066-v97",
+      "displayId": "A53066",
+      "docType": "Article",
+      "source": "local",
+      "title": "Self-Administered Drug Exclusion List:",
+      "updatedOn": "04/27/2026",
+      "effectiveDate": "06/01/2026",
+      "impact": "high",
+      "tags": [
+        "coding"
+      ],
+      "summary": "High-signal revision from CMS notes: Under Excluded CPT/HCPCS Codes – Table Format added C9399, J3490, J3590 for Nemluvio (nemolizumab-ilto) and deleted the asterisk for Skyrizi™ (risankizumab-rzaa) using CPT codes C9399, J3490, J3590.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/article.aspx?articleid=53066&ver=97"
+    }
+  ]
+}

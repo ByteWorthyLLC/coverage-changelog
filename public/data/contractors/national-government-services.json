@@ -1,0 +1,44 @@
+{
+  "generatedAt": "2026-05-08T15:59:01.794Z",
+  "cmsApiVersion": "1.6",
+  "updatePeriod": {
+    "periodId": 1198,
+    "beginDate": "20260427",
+    "endDate": "20260504",
+    "label": "Apr 27, 2026 to May 4, 2026"
+  },
+  "contractor": {
+    "slug": "national-government-services",
+    "name": "National Government Services, Inc.",
+    "shortName": "National Government Services",
+    "longName": "National Government Services, Inc.",
+    "jurisdictions": [
+      "JK",
+      "J6"
+    ]
+  },
+  "stats": {
+    "total": 1,
+    "highImpact": 0,
+    "coding": 0,
+    "criteria": 0,
+    "retirement": 0
+  },
+  "entries": [
+    {
+      "recordId": "L39036-v23",
+      "displayId": "L39036",
+      "docType": "LCD",
+      "source": "local",
+      "title": "Epidural Steroid Injections for Pain Management",
+      "updatedOn": "05/01/2026",
+      "effectiveDate": "05/07/2026",
+      "impact": "low",
+      "tags": [
+        "administrative correction"
+      ],
+      "summary": "Lower-urgency correction or cleanup: Corrected link for #31 in the bibliography.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/lcd.aspx?lcdid=39036&ver=23"
+    }
+  ]
+}

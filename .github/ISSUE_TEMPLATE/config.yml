@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Live workbench
+    url: https://byteworthyllc.github.io/coverage-changelog/
+    about: Browse the live changelog and verify the issue against current data.
+  - name: ByteWorthy
+    url: https://byteworthy.io
+    about: Custom AI for healthcare practices, law firms, and real estate. Pilot then retainer.

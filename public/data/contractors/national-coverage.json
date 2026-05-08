@@ -1,0 +1,147 @@
+{
+  "generatedAt": "2026-05-08T15:59:01.794Z",
+  "cmsApiVersion": "1.6",
+  "updatePeriod": {
+    "periodId": 1198,
+    "beginDate": "20260427",
+    "endDate": "20260504",
+    "label": "Apr 27, 2026 to May 4, 2026"
+  },
+  "contractor": {
+    "slug": "national-coverage",
+    "name": "National coverage (CMS)",
+    "shortName": "National coverage",
+    "longName": "National coverage (CMS)",
+    "jurisdictions": [
+      "NCD"
+    ]
+  },
+  "stats": {
+    "total": 8,
+    "highImpact": 0,
+    "coding": 0,
+    "criteria": 0,
+    "retirement": 0
+  },
+  "entries": [
+    {
+      "recordId": "240.9-v1",
+      "displayId": "240.9",
+      "docType": "NCD",
+      "source": "national",
+      "title": "Noninvasive Positive Pressure Ventilation (NIPPV) in the Home for the Treatment of Chronic Respiratory Failure (CRF) Consequent to Chronic Obstructive Pulmonary Disease (COPD)",
+      "updatedOn": "04/30/2026",
+      "impact": "medium",
+      "tags": [
+        "operations",
+        "coding notice"
+      ],
+      "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=380&ncdver=1"
+    },
+    {
+      "recordId": "220.6.17-v4",
+      "displayId": "220.6.17",
+      "docType": "NCD",
+      "source": "national",
+      "title": "Positron Emission Tomography (FDG) for Oncologic Conditions",
+      "updatedOn": "04/30/2026",
+      "impact": "medium",
+      "tags": [
+        "operations",
+        "coding notice"
+      ],
+      "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=331&ncdver=4"
+    },
+    {
+      "recordId": "160.18-v3",
+      "displayId": "160.18",
+      "docType": "NCD",
+      "source": "national",
+      "title": "Vagus Nerve Stimulation (VNS)",
+      "updatedOn": "04/30/2026",
+      "impact": "medium",
+      "tags": [
+        "operations",
+        "coding notice"
+      ],
+      "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=230&ncdver=3"
+    },
+    {
+      "recordId": "110.18-v2",
+      "displayId": "110.18",
+      "docType": "NCD",
+      "source": "national",
+      "title": "Aprepitant for Chemotherapy-Induced Emesis",
+      "updatedOn": "04/30/2026",
+      "impact": "medium",
+      "tags": [
+        "operations",
+        "coding notice"
+      ],
+      "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=309&ncdver=2"
+    },
+    {
+      "recordId": "90.2-v2",
+      "displayId": "90.2",
+      "docType": "NCD",
+      "source": "national",
+      "title": "Next Generation Sequencing (NGS)",
+      "updatedOn": "04/30/2026",
+      "impact": "medium",
+      "tags": [
+        "operations",
+        "coding notice"
+      ],
+      "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=372&ncdver=2"
+    },
+    {
+      "recordId": "150.13-v2",
+      "displayId": "150.13",
+      "docType": "NCD",
+      "source": "national",
+      "title": "Percutaneous Image-Guided Lumbar Decompression for Lumbar Spinal Stenosis",
+      "updatedOn": "04/30/2026",
+      "impact": "medium",
+      "tags": [
+        "operations",
+        "coding notice"
+      ],
+      "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=358&ncdver=2"
+    },
+    {
+      "recordId": "210.10-v1",
+      "displayId": "210.10",
+      "docType": "NCD",
+      "source": "national",
+      "title": "Screening for Sexually Transmitted Infections (STIs) and High-Intensity Behavioral Counseling (HIBC) to Prevent STIs",
+      "updatedOn": "04/30/2026",
+      "impact": "medium",
+      "tags": [
+        "operations",
+        "coding notice"
+      ],
+      "summary": "Updated NCD coding via a new Change Request/Transmittal, no policy changes.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=352&ncdver=1"
+    },
+    {
+      "recordId": "110.17-v2",
+      "displayId": "110.17",
+      "docType": "NCD",
+      "source": "national",
+      "title": "Anti-Cancer Chemotherapy for Colorectal Cancer - RETIRED",
+      "updatedOn": "04/23/2026",
+      "impact": "low",
+      "tags": [
+        "general update"
+      ],
+      "summary": "Effective 2/25/2026, this section of the NCD Manual is removed.",
+      "detailUrl": "https://www.cms.gov/medicare-coverage-database/view/ncd.aspx?ncdid=291&ncdver=2"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 360" role="img" aria-label="Coverage Changelog — CMS coverage updates ranked for Monday">
+  <defs>
+    <pattern id="dotgrid" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="1.2" fill="#E5E7EB"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="360" fill="#FAFAFA"/>
+  <rect width="1280" height="360" fill="url(#dotgrid)"/>
+
+  <g transform="translate(72,84)">
+    <text x="0" y="0" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="14" letter-spacing="2" fill="#64748B" font-weight="600">BYTEWORTHY · OPEN SOURCE · MIT</text>
+    <text x="0" y="60" font-family="Inter, system-ui, sans-serif" font-size="56" font-weight="600" fill="#0F172A" letter-spacing="-1.5">Coverage Changelog</text>
+    <text x="0" y="116" font-family="Inter, system-ui, sans-serif" font-size="22" fill="#475569">Free CMS coverage policy updates, ranked for Monday morning.</text>
+    <text x="0" y="148" font-family="Inter, system-ui, sans-serif" font-size="18" fill="#64748B">RSS · JSON · CSV · per-contractor briefs · no login · no PHI</text>
+
+    <g transform="translate(0,196)">
+      <g>
+        <rect width="148" height="34" rx="4" fill="#0F172A"/>
+        <text x="14" y="22" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#FAFAFA" font-weight="600">LICENSE: MIT</text>
+      </g>
+      <g transform="translate(160,0)">
+        <rect width="170" height="34" rx="4" fill="#2563EB"/>
+        <text x="14" y="22" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#FFFFFF" font-weight="600">TRY THE LIVE DEMO</text>
+      </g>
+      <g transform="translate(342,0)">
+        <rect width="180" height="34" rx="4" fill="#FAFAFA" stroke="#0F172A"/>
+        <text x="14" y="22" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#0F172A" font-weight="600">FORK FOR YOUR ORG</text>
+      </g>
+    </g>
+  </g>
+
+  <g transform="translate(820,80)">
+    <rect width="388" height="200" rx="12" fill="#FFFFFF" stroke="#E5E7EB"/>
+    <g transform="translate(28,32)">
+      <text x="0" y="0" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11" letter-spacing="2" fill="#64748B" font-weight="600">CURRENT WINDOW</text>
+      <text x="0" y="48" font-family="Inter, system-ui, sans-serif" font-size="44" font-weight="700" fill="#0F172A">30</text>
+      <text x="0" y="74" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#475569">CMS coverage updates</text>
+      <line x1="0" y1="100" x2="332" y2="100" stroke="#E5E7EB"/>
+      <g transform="translate(0,116)">
+        <text font-family="Inter, system-ui, sans-serif" font-size="13" fill="#64748B">High impact</text>
+        <text x="332" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#2563EB">8</text>
+      </g>
+      <g transform="translate(0,140)">
+        <text font-family="Inter, system-ui, sans-serif" font-size="13" fill="#64748B">Coding flags</text>
+        <text x="332" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#0F172A">12</text>
+      </g>
+    </g>
+  </g>
+
+  <g transform="translate(72,316)">
+    <text font-family="'JetBrains Mono', ui-monospace, monospace" font-size="12" letter-spacing="1.5" fill="#94A3B8">BYTEWORTHYLLC.GITHUB.IO/COVERAGE-CHANGELOG</text>
+  </g>
+</svg>
