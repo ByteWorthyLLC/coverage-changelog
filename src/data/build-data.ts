@@ -20,6 +20,7 @@ const publicDir = path.join(projectRoot, 'public')
 const dataDir = path.join(publicDir, 'data')
 const briefDir = path.join(publicDir, 'briefs')
 const latestDatasetPath = path.join(dataDir, 'latest.json')
+const publicSiteUrl = 'https://byteworthyllc.github.io/coverage-changelog/'
 
 function parseCmsYmd(value: string): Date {
   return new Date(Number(value.slice(0, 4)), Number(value.slice(4, 6)) - 1, Number(value.slice(6, 8)))
@@ -46,12 +47,40 @@ function escapeHtml(value: string): string {
     .replaceAll("'", '&#39;')
 }
 
+function escapeCsv(value: unknown): string {
+  const text = String(value ?? '')
+  if (!/[",\n\r]/.test(text)) {
+    return text
+  }
+
+  return `"${text.replaceAll('"', '""')}"`
+}
+
+function toRfc822(value: string): string {
+  const parsed = new Date(value)
+  if (Number.isNaN(parsed.getTime())) {
+    return new Date().toUTCString()
+  }
+
+  return parsed.toUTCString()
+}
+
 async function loadExistingDataset(): Promise<CoverageDataset | null> {
   try {
     const raw = await readFile(latestDatasetPath, 'utf8')
     return JSON.parse(raw) as CoverageDataset
   } catch {
     return null
+  }
+}
+
+async function safeData<T>(label: string, operation: Promise<{ data?: T[] }>): Promise<T[]> {
+  try {
+    return (await operation).data ?? []
+  } catch (error) {
+    console.warn(`Skipped optional CMS enrichment: ${label}`)
+    console.warn(error)
+    return []
   }
 }
 
@@ -72,6 +101,43 @@ async function writeArtifacts(dataset: CoverageDataset): Promise<void> {
     summary: entry.summary,
     detailUrl: entry.detailUrl,
   }))
+
+  const csvRows = [
+    [
+      'record_id',
+      'display_id',
+      'document_type',
+      'source',
+      'impact',
+      'impact_score',
+      'updated_on',
+      'effective_date',
+      'contractor',
+      'tags',
+      'title',
+      'summary',
+      'cms_url',
+    ],
+    ...dataset.entries.map((entry) => [
+      entry.recordId,
+      entry.displayId,
+      entry.docType,
+      entry.source,
+      entry.impact,
+      entry.impactScore,
+      entry.updatedOn,
+      entry.effectiveDate ?? '',
+      entry.contractorName ?? '',
+      entry.tags.join('; '),
+      entry.title,
+      entry.summary,
+      entry.detailUrl,
+    ]),
+  ]
+    .map((row) => row.map(escapeCsv).join(','))
+    .join('\n')
+
+  const ndjson = dataset.entries.map((entry) => JSON.stringify(entry)).join('\n')
 
   const markdown = [
     `# ${dataset.brief.title}`,
@@ -133,10 +199,51 @@ async function writeArtifacts(dataset: CoverageDataset): Promise<void> {
   </body>
 </html>`
 
+  const rssItems = dataset.entries
+    .slice(0, 25)
+    .map(
+      (entry) => `
+    <item>
+      <title>${escapeHtml(`${entry.displayId}: ${entry.title}`)}</title>
+      <link>${escapeHtml(entry.detailUrl)}</link>
+      <guid isPermaLink="false">${escapeHtml(entry.recordId)}</guid>
+      <pubDate>${escapeHtml(toRfc822(dataset.generatedAt))}</pubDate>
+      <category>${escapeHtml(entry.impact)}</category>
+      <description>${escapeHtml(entry.summary)}</description>
+    </item>`,
+    )
+    .join('')
+
+  const rss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Coverage Changelog</title>
+    <link>${publicSiteUrl}</link>
+    <description>Free CMS coverage policy updates ranked by likely operational impact.</description>
+    <lastBuildDate>${escapeHtml(toRfc822(dataset.generatedAt))}</lastBuildDate>
+    <language>en-us</language>${rssItems}
+  </channel>
+</rss>`
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${publicSiteUrl}</loc>
+    <lastmod>${dataset.generatedAt.slice(0, 10)}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>`
+
   await writeFile(latestDatasetPath, `${JSON.stringify(dataset, null, 2)}\n`)
   await writeFile(path.join(dataDir, 'feed.json'), `${JSON.stringify(feed, null, 2)}\n`)
+  await writeFile(path.join(dataDir, 'feed.csv'), `${csvRows}\n`)
+  await writeFile(path.join(dataDir, 'feed.ndjson'), `${ndjson}\n`)
   await writeFile(path.join(briefDir, 'latest.md'), markdown)
   await writeFile(path.join(briefDir, 'latest.html'), html)
+  await writeFile(path.join(publicDir, 'rss.xml'), rss)
+  await writeFile(path.join(publicDir, 'sitemap.xml'), sitemap)
+  await writeFile(path.join(publicDir, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${publicSiteUrl}sitemap.xml\n`)
   await writeFile(path.join(publicDir, '.nojekyll'), '')
 }
 
@@ -176,18 +283,30 @@ async function buildLiveDataset(): Promise<CoverageDataset> {
         report.document_type === 'LCD'
           ? {
               revisionHistory: filterRevisionVersion(
-                (await getLcdRevisionHistory(report.document_id, report.document_version, token)).data ?? [],
+                await safeData(
+                  `${report.document_display_id} LCD revision history`,
+                  getLcdRevisionHistory(report.document_id, report.document_version, token),
+                ),
               ),
               reasonChanges: filterRevisionVersion(
-                (await getLcdReasonChange(report.document_id, report.document_version, token)).data ?? [],
+                await safeData(
+                  `${report.document_display_id} LCD reason change`,
+                  getLcdReasonChange(report.document_id, report.document_version, token),
+                ),
               ),
               synopsisChanges: filterRevisionVersion(
-                (await getLcdSynopsisChanges(report.document_id, report.document_version, token)).data ?? [],
+                await safeData(
+                  `${report.document_display_id} LCD synopsis changes`,
+                  getLcdSynopsisChanges(report.document_id, report.document_version, token),
+                ),
               ),
             }
           : {
               revisionHistory: filterRevisionVersion(
-                (await getArticleRevisionHistory(report.document_id, report.document_version, token)).data ?? [],
+                await safeData(
+                  `${report.document_display_id} article revision history`,
+                  getArticleRevisionHistory(report.document_id, report.document_version, token),
+                ),
               ),
               reasonChanges: [],
               synopsisChanges: [],

@@ -1,40 +1,68 @@
 # Coverage Changelog
 
-Coverage Changelog turns the CMS Coverage API into a public policy feed:
+Free CMS coverage policy monitoring for people who do not want another closed dashboard.
 
-- a diff-first wall of local and national coverage updates
-- a Monday morning brief you can forward
-- a static JSON feed for builders
+Coverage Changelog turns the CMS Coverage API into a public policy workbench:
 
-This project is intentionally narrow. It is not a full policy database and it is not a prior auth workflow product. It is a readable changelog for coverage rules.
+- ranked CMS coverage updates
+- Monday morning briefs
+- JSON, CSV, NDJSON, and RSS feeds
+- direct links back to official CMS source documents
+- no login, no PHI, no paid API dependency
 
-## Why this exists
+Live site: https://byteworthyllc.github.io/coverage-changelog/
 
-Official CMS coverage data is real, free, and current, but the default experience is still closer to report retrieval than change awareness. Coverage Changelog packages the signal that matters first:
+## Why it matters
 
-- what changed
-- where it changed
-- why it might matter on Monday morning
+Coverage changes are easy to miss because the official data is spread across reports, document pages, and revision history endpoints. This repo makes one thing obvious:
 
-## What it ships
+> What changed, who might care, and what should be checked next?
 
-- `wall`: a browsable UI ranked by likely operational impact
-- `brief`: generated markdown and HTML summaries
-- `feed`: static JSON outputs for downstream tools
-- `engine`: CMS ingestion and impact heuristics based on revision-history and reason-change records
+This is not a payer portal, prior auth workflow, or policy database. It is a changelog layer over public CMS coverage updates.
+
+## Current build
+
+The current generated dataset tracks:
+
+- CMS Coverage API version `1.6`
+- local coverage updates
+- national coverage updates
+- LCD revision history
+- LCD reason change data
+- article revision history
+- update period metadata
+
+The app is static and can be hosted for free on GitHub Pages.
+
+## Outputs
+
+Every build writes public artifacts:
+
+| File | Purpose |
+|---|---|
+| `public/data/latest.json` | Full dataset with stats, highlights, brief sections, and entries |
+| `public/data/feed.json` | Smaller flat feed for scripts and integrations |
+| `public/data/feed.csv` | Spreadsheet-friendly export |
+| `public/data/feed.ndjson` | Line-delimited export for data pipelines |
+| `public/briefs/latest.md` | Forwardable markdown brief |
+| `public/briefs/latest.html` | Standalone HTML brief |
+| `public/rss.xml` | RSS feed for subscribers |
+| `public/sitemap.xml` | Search indexing hint |
 
 ## Data sources
 
-The current build uses only free CMS surfaces:
+The current version uses only free CMS surfaces:
 
-- CMS Coverage API docs: `https://api.coverage.cms.gov/docs/`
-- local updates: `/v1/reports/whats-new/local/`
-- national updates: `/v1/reports/whats-new/national/`
-- update period metadata: `/v1/metadata/update-period/`
-- LCD revision history and reason change endpoints
-- article revision history endpoints
+- `https://api.coverage.cms.gov/docs/`
+- `/v1/reports/whats-new/local/`
+- `/v1/reports/whats-new/national/`
+- `/v1/metadata/update-period/`
+- `/v1/data/lcd/revision-history`
+- `/v1/data/lcd/reason-change`
+- `/v1/data/lcd/synopsis-changes`
+- `/v1/data/article/revision-history`
 
-No patient data, payer credentials, or PHI are used.
+No patient data, payer credentials, private claims, or protected health information are used.
 
 ## Local development
 
@@ -55,9 +83,9 @@ Run the full verification loop:
 npm run check
 ```
 
-## Deployment
+## GitHub Pages
 
-GitHub Pages builds must set:
+GitHub Pages deploys should set the base path:
 
 ```bash
 PUBLIC_BASE_PATH=/coverage-changelog/
@@ -65,26 +93,38 @@ PUBLIC_BASE_PATH=/coverage-changelog/
 
 Local development and local previews default to `/`.
 
-## Generated artifacts
+## Architecture
 
-Each build writes:
+```text
+CMS Coverage API
+  -> build-time TypeScript ingestion
+  -> version-scoped enrichment
+  -> impact heuristics
+  -> static artifacts
+  -> React workbench
+  -> GitHub Pages
+```
 
-- `public/data/latest.json`
-- `public/data/feed.json`
-- `public/briefs/latest.md`
-- `public/briefs/latest.html`
+The build is resilient to optional detail endpoint failures. If a single document enrichment fails, that enrichment is skipped and the rest of the dataset still ships. If the required CMS report fetch fails, the previous generated dataset is reused.
 
-## Tech
+## Product principles
 
-- React 19
-- TypeScript
-- Vite
-- Vitest
-- CMS Coverage API
+- Free for maintainers.
+- Free for users.
+- Public sources only.
+- Source links over black-box summaries.
+- Static hosting before infrastructure.
+- Practical outputs before platform features.
 
 ## Roadmap
 
-- better impact heuristics for true coverage-criteria changes
-- per-contractor views and export slices
-- RSS and email-ready output
-- additional public policy sources beyond CMS once the core wall is stable
+- contractor-specific pages and feeds
+- specialty slices for common billing and RCM workflows
+- change history across build windows
+- stronger coverage-criteria detection
+- email-ready brief templates
+- additional free public policy sources after CMS is stable
+
+## License
+
+MIT

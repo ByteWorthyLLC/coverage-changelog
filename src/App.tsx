@@ -1,4 +1,22 @@
-import { startTransition, useDeferredValue, useEffect, useState } from 'react'
+import {
+  ArrowUpRight,
+  Bell,
+  Braces,
+  Clipboard,
+  Download,
+  ExternalLink,
+  FileJson,
+  Filter,
+  GitPullRequest,
+  ListChecks,
+  Radio,
+  Rss,
+  Search,
+  ShieldCheck,
+  Sparkles,
+  X,
+} from 'lucide-react'
+import { startTransition, useDeferredValue, useEffect, useMemo, useState } from 'react'
 import './App.css'
 import type { CoverageDataset, CoverageEntry, ImpactLevel } from './lib/types'
 import {
@@ -6,14 +24,86 @@ import {
   formatImpactLabel,
   formatRelativeWindow,
   formatSourceLabel,
-  formatStamp,
 } from './lib/presentation'
+
+type ViewMode = 'radar' | 'changes' | 'brief' | 'feed'
+type QuickFilter = 'all' | 'high' | 'coding' | 'local' | 'national' | 'admin'
+
+const viewTabs: Array<{ id: ViewMode; label: string }> = [
+  { id: 'radar', label: 'Radar' },
+  { id: 'changes', label: 'Changes' },
+  { id: 'brief', label: 'Brief' },
+  { id: 'feed', label: 'Feed' },
+]
+
+const quickFilters: Array<{ id: QuickFilter; label: string }> = [
+  { id: 'all', label: 'All' },
+  { id: 'high', label: 'High impact' },
+  { id: 'coding', label: 'Coding' },
+  { id: 'local', label: 'Local' },
+  { id: 'national', label: 'National' },
+  { id: 'admin', label: 'Admin' },
+]
+
+function countBy<T extends string>(values: T[]): Array<{ label: T; count: number }> {
+  const counts = values.reduce<Record<string, number>>((acc, value) => {
+    acc[value] = (acc[value] ?? 0) + 1
+    return acc
+  }, {})
+
+  return Object.entries(counts)
+    .map(([label, count]) => ({ label: label as T, count }))
+    .sort((left, right) => right.count - left.count || left.label.localeCompare(right.label))
+}
+
+function getBriefSection(dataset: CoverageDataset, heading: string): string[] {
+  return dataset.brief.sections.find((section) => section.heading === heading)?.items ?? []
+}
+
+function getEntryText(entry: CoverageEntry): string {
+  return [
+    entry.displayId,
+    entry.title,
+    entry.contractorName,
+    entry.summary,
+    entry.narrative,
+    entry.reasons.join(' '),
+    entry.changedText.join(' '),
+    entry.tags.join(' '),
+  ]
+    .join(' ')
+    .toLowerCase()
+}
+
+function matchesQuickFilter(entry: CoverageEntry, quickFilter: QuickFilter): boolean {
+  if (quickFilter === 'all') {
+    return true
+  }
+
+  if (quickFilter === 'high') {
+    return entry.impact === 'high'
+  }
+
+  if (quickFilter === 'coding') {
+    return entry.tags.includes('coding')
+  }
+
+  if (quickFilter === 'local' || quickFilter === 'national') {
+    return entry.source === quickFilter
+  }
+
+  return entry.tags.includes('administrative correction') || entry.impact === 'low'
+}
 
 function App() {
   const [dataset, setDataset] = useState<CoverageDataset | null>(null)
   const [search, setSearch] = useState('')
   const [impact, setImpact] = useState<'all' | ImpactLevel>('all')
   const [docType, setDocType] = useState<'all' | CoverageEntry['docType']>('all')
+  const [quickFilter, setQuickFilter] = useState<QuickFilter>('all')
+  const [viewMode, setViewMode] = useState<ViewMode>('radar')
+  const [selectedEntryId, setSelectedEntryId] = useState<string>('')
+  const [copied, setCopied] = useState('')
   const [error, setError] = useState('')
   const deferredSearch = useDeferredValue(search)
 
@@ -32,6 +122,7 @@ function App() {
 
         const json = (await response.json()) as CoverageDataset
         setDataset(json)
+        setSelectedEntryId(json.entries[0]?.recordId ?? '')
       } catch (loadError) {
         if (controller.signal.aborted) {
           return
@@ -48,38 +139,49 @@ function App() {
     return () => controller.abort()
   }, [])
 
+  const entries = useMemo(() => dataset?.entries ?? [], [dataset])
   const normalizedSearch = deferredSearch.trim().toLowerCase()
-  const entries = dataset?.entries ?? []
-  const filteredEntries = entries.filter((entry) => {
-    const matchesImpact = impact === 'all' || entry.impact === impact
-    const matchesDocType = docType === 'all' || entry.docType === docType
-    const haystack = [
-      entry.displayId,
-      entry.title,
-      entry.contractorName,
-      entry.summary,
-      entry.narrative,
-      entry.reasons.join(' '),
-      entry.tags.join(' '),
-    ]
-      .join(' ')
-      .toLowerCase()
+  const filteredEntries = useMemo(
+    () =>
+      entries.filter((entry) => {
+        const matchesImpact = impact === 'all' || entry.impact === impact
+        const matchesDocType = docType === 'all' || entry.docType === docType
+        const matchesSearch = normalizedSearch.length === 0 || getEntryText(entry).includes(normalizedSearch)
+        return matchesImpact && matchesDocType && matchesSearch && matchesQuickFilter(entry, quickFilter)
+      }),
+    [docType, entries, impact, normalizedSearch, quickFilter],
+  )
 
-    const matchesSearch = normalizedSearch.length === 0 || haystack.includes(normalizedSearch)
-    return matchesImpact && matchesDocType && matchesSearch
-  })
-
+  const selectedEntry =
+    entries.find((entry) => entry.recordId === selectedEntryId) ?? filteredEntries[0] ?? entries[0]
   const highlights = dataset?.highlights ?? []
-  const mondayChecks = dataset?.brief.sections.find((section) => section.heading === 'Monday checks')
+  const mondayChecks = dataset ? getBriefSection(dataset, 'Monday checks') : []
+  const highImpactMoves = dataset ? getBriefSection(dataset, 'High-impact moves') : []
+  const quietCorrections = dataset ? getBriefSection(dataset, 'Quiet corrections') : []
+
+  const breakdowns = useMemo(() => {
+    const byDocType = countBy(entries.map((entry) => entry.docType))
+    const byImpact = countBy(entries.map((entry) => entry.impact))
+    const topContractors = countBy(entries.map((entry) => entry.contractorName).filter(Boolean) as string[]).slice(0, 6)
+    const topTags = countBy(entries.flatMap((entry) => entry.tags)).slice(0, 6)
+
+    return { byDocType, byImpact, topContractors, topTags }
+  }, [entries])
+
+  const copyText = async (label: string, value: string) => {
+    await navigator.clipboard.writeText(value)
+    setCopied(label)
+    window.setTimeout(() => setCopied(''), 1600)
+  }
 
   if (error) {
     return (
-      <main className="shell">
-        <section className="error-state">
-          <p className="eyebrow">Coverage Changelog</p>
+      <main className="app-frame">
+        <section className="state-panel">
+          <ShieldCheck aria-hidden="true" />
           <h1>The wall did not load.</h1>
           <p>{error}</p>
-          <a className="ghost-link" href={`${import.meta.env.BASE_URL}data/latest.json`}>
+          <a className="text-link" href={`${import.meta.env.BASE_URL}data/latest.json`}>
             Open raw dataset
           </a>
         </section>
@@ -89,9 +191,9 @@ function App() {
 
   if (!dataset) {
     return (
-      <main className="shell">
-        <section className="loading-state">
-          <p className="eyebrow">Coverage Changelog</p>
+      <main className="app-frame">
+        <section className="state-panel">
+          <Radio aria-hidden="true" />
           <h1>Loading the latest CMS update window.</h1>
           <p>Pulling the changelog, brief, and policy wall.</p>
         </section>
@@ -100,228 +202,390 @@ function App() {
   }
 
   return (
-    <main className="shell">
-      <section className="hero-panel">
-        <div className="hero-copy">
+    <main className="app-frame">
+      <header className="top-bar">
+        <div>
           <p className="eyebrow">Coverage Changelog</p>
-          <h1>This is not a policy database. It is a changelog for coverage rules.</h1>
-          <p className="lede">
-            CMS local and national updates, diffed into a Monday brief and a live policy wall.
-            No patient data. No login. Just the updates worth forwarding.
+          <h1>CMS coverage changes, ranked for Monday morning.</h1>
+        </div>
+        <nav className="top-actions" aria-label="Primary resources">
+          <a href="https://github.com/ByteWorthyLLC/coverage-changelog" target="_blank" rel="noreferrer">
+            <GitPullRequest aria-hidden="true" />
+            GitHub
+          </a>
+          <a href={`${import.meta.env.BASE_URL}briefs/latest.md`} target="_blank" rel="noreferrer">
+            <ListChecks aria-hidden="true" />
+            Brief
+          </a>
+          <a href={`${import.meta.env.BASE_URL}rss.xml`} target="_blank" rel="noreferrer">
+            <Rss aria-hidden="true" />
+            RSS
+          </a>
+        </nav>
+      </header>
+
+      <section className="command-center" aria-label="Coverage update summary">
+        <div className="signal-panel">
+          <div className="signal-header">
+            <div>
+              <p className="eyebrow">Live window</p>
+              <h2>{formatRelativeWindow(dataset.updatePeriod.beginDate, dataset.updatePeriod.endDate)}</h2>
+            </div>
+            <span className="live-badge">
+              <Radio aria-hidden="true" />
+              API {dataset.cmsApiVersion}
+            </span>
+          </div>
+          <p className="signal-copy">
+            Official CMS updates are pulled into static artifacts, sorted by likely work impact,
+            and published with no login, backend, patient data, or paid API dependency.
           </p>
+          <div className="signal-grid">
+            <div>
+              <strong>{dataset.stats.total}</strong>
+              <span>changes</span>
+            </div>
+            <div>
+              <strong>{dataset.stats.highImpact}</strong>
+              <span>high impact</span>
+            </div>
+            <div>
+              <strong>{dataset.stats.codingChanges}</strong>
+              <span>coding flags</span>
+            </div>
+            <div>
+              <strong>{dataset.stats.contractors}</strong>
+              <span>MAC footprints</span>
+            </div>
+          </div>
         </div>
 
-        <div className="hero-aside">
-          <div className="status-card">
-            <span className="status-label">Current window</span>
-            <strong>{formatRelativeWindow(dataset.updatePeriod.beginDate, dataset.updatePeriod.endDate)}</strong>
-            <p>{dataset.updatePeriod.label}</p>
+        <div className="brief-panel">
+          <div className="panel-title">
+            <Bell aria-hidden="true" />
+            <h2>Monday checks</h2>
           </div>
-          <div className="status-card">
-            <span className="status-label">Generated</span>
-            <strong>{formatStamp(dataset.generatedAt)}</strong>
-            <p>API {dataset.cmsApiVersion}</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="stats-strip">
-        <article className="stat-card">
-          <span>Tracked changes</span>
-          <strong>{dataset.stats.total}</strong>
-          <p>Local and national CMS policy updates in one window.</p>
-        </article>
-        <article className="stat-card">
-          <span>High impact</span>
-          <strong>{dataset.stats.highImpact}</strong>
-          <p>Changes likely to touch coding, coverage criteria, or operational rules.</p>
-        </article>
-        <article className="stat-card">
-          <span>Local vs national</span>
-          <strong>
-            {dataset.stats.local} / {dataset.stats.national}
-          </strong>
-          <p>Local coverage articles and LCDs alongside national signals.</p>
-        </article>
-        <article className="stat-card">
-          <span>Contractors</span>
-          <strong>{dataset.stats.contractors}</strong>
-          <p>Distinct MAC footprints represented in this release window.</p>
-        </article>
-      </section>
-
-      <section className="feature-grid">
-        <article className="feature-card feature-card-brief">
-          <div className="feature-header">
-            <p className="eyebrow">Monday brief</p>
-            <h2>Forwardable in under a minute.</h2>
-          </div>
-          <p>
-            The changelog generates a short markdown and HTML brief from the same official CMS
-            revision notes powering the wall.
-          </p>
-          <div className="brief-actions">
-            <a href={`${import.meta.env.BASE_URL}briefs/latest.md`} target="_blank" rel="noreferrer">
-              Open markdown brief
-            </a>
-            <a href={`${import.meta.env.BASE_URL}briefs/latest.html`} target="_blank" rel="noreferrer">
-              Open HTML brief
-            </a>
-          </div>
-          <ul className="brief-list">
-            {dataset.brief.bullets.map((bullet) => (
-              <li key={bullet}>{bullet}</li>
+          <ol className="brief-checks">
+            {mondayChecks.slice(0, 4).map((item) => (
+              <li key={item}>{item}</li>
             ))}
-          </ul>
-        </article>
-
-        <article className="feature-card feature-card-sources">
-          <div className="feature-header">
-            <p className="eyebrow">Open inputs</p>
-            <h2>Built on free CMS APIs.</h2>
-          </div>
-          <p>
-            Local and national report endpoints, update-period metadata, and document-level
-            revision history. No scraping required for v1.
-          </p>
-          <div className="brief-actions">
-            <a href="https://api.coverage.cms.gov/docs/" target="_blank" rel="noreferrer">
-              Coverage API docs
-            </a>
-            <a href={`${import.meta.env.BASE_URL}data/feed.json`} target="_blank" rel="noreferrer">
-              Open JSON feed
-            </a>
-          </div>
-        </article>
+          </ol>
+        </div>
       </section>
 
-      <section className="highlights-panel">
-        <div className="section-heading">
-          <p className="eyebrow">Whoa moments</p>
-          <h2>The updates most likely to change Monday morning work.</h2>
-        </div>
-        <div className="highlight-grid">
-          {highlights.map((highlight) => (
-            <article key={highlight.recordId} className={`highlight-card impact-${highlight.impact}`}>
-              <div className="pill-row">
-                <span className={`impact-pill impact-${highlight.impact}`}>
-                  {formatImpactLabel(highlight.impact)}
-                </span>
-                <span className="quiet-pill">{formatDateLabel(highlight.updatedOn)}</span>
-              </div>
-              <h3>{highlight.title}</h3>
-              <p>{highlight.quote}</p>
-              <a href={highlight.detailUrl} target="_blank" rel="noreferrer">
-                Open source document
-              </a>
-            </article>
+      <section className="toolbar" aria-label="Coverage changelog controls">
+        <div className="tab-list" role="tablist" aria-label="View mode">
+          {viewTabs.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              className={viewMode === tab.id ? 'active' : ''}
+              onClick={() => setViewMode(tab.id)}
+              role="tab"
+              aria-selected={viewMode === tab.id}
+            >
+              {tab.label}
+            </button>
           ))}
         </div>
+
+        <div className="search-box">
+          <Search aria-hidden="true" />
+          <input
+            type="search"
+            placeholder="Search code, contractor, document, policy language"
+            value={search}
+            onChange={(event) => {
+              const nextValue = event.target.value
+              startTransition(() => setSearch(nextValue))
+            }}
+          />
+        </div>
       </section>
 
-      <section className="wall-panel">
-        <div className="wall-toolbar">
-          <div className="section-heading">
-            <p className="eyebrow">Policy wall</p>
-            <h2>Every tracked change, ranked by likely operational impact.</h2>
-          </div>
-          <div className="toolbar-actions">
-            <label>
-              <span>Search</span>
-              <input
-                type="search"
-                placeholder="Try CPT, Palmetto, L39036, coverage..."
-                value={search}
-                onChange={(event) => {
-                  const nextValue = event.target.value
-                  startTransition(() => setSearch(nextValue))
-                }}
-              />
-            </label>
-            <label>
-              <span>Impact</span>
-              <select value={impact} onChange={(event) => setImpact(event.target.value as 'all' | ImpactLevel)}>
-                <option value="all">All</option>
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
-              </select>
-            </label>
-            <label>
-              <span>Document</span>
-              <select
-                value={docType}
-                onChange={(event) =>
-                  setDocType(event.target.value as 'all' | CoverageEntry['docType'])
-                }
-              >
-                <option value="all">All</option>
-                <option value="LCD">LCD</option>
-                <option value="Article">Article</option>
-                <option value="NCD">NCD</option>
-              </select>
-            </label>
-          </div>
+      <section className="filter-row" aria-label="Quick filters">
+        <div className="quick-filters">
+          {quickFilters.map((filter) => (
+            <button
+              key={filter.id}
+              type="button"
+              className={quickFilter === filter.id ? 'active' : ''}
+              onClick={() => setQuickFilter(filter.id)}
+            >
+              {filter.label}
+            </button>
+          ))}
         </div>
+        <div className="select-filters">
+          <label>
+            <Filter aria-hidden="true" />
+            <select value={impact} onChange={(event) => setImpact(event.target.value as 'all' | ImpactLevel)}>
+              <option value="all">All impact</option>
+              <option value="high">High impact</option>
+              <option value="medium">Medium impact</option>
+              <option value="low">Low impact</option>
+            </select>
+          </label>
+          <label>
+            <FileJson aria-hidden="true" />
+            <select
+              value={docType}
+              onChange={(event) => setDocType(event.target.value as 'all' | CoverageEntry['docType'])}
+            >
+              <option value="all">All documents</option>
+              <option value="LCD">LCD</option>
+              <option value="Article">Article</option>
+              <option value="NCD">NCD</option>
+            </select>
+          </label>
+        </div>
+      </section>
 
-        {mondayChecks ? (
-          <aside className="monday-checks">
-            <h3>{mondayChecks.heading}</h3>
-            <ul>
-              {mondayChecks.items.map((item) => (
+      {viewMode === 'radar' ? (
+        <section className="radar-grid">
+          <div className="analysis-panel span-2">
+            <div className="panel-title">
+              <Sparkles aria-hidden="true" />
+              <h2>Highest signal updates</h2>
+            </div>
+            <div className="highlight-strip">
+              {highlights.map((highlight) => (
+                <button
+                  key={highlight.recordId}
+                  type="button"
+                  className={`highlight-tile impact-${highlight.impact}`}
+                  onClick={() => {
+                    setSelectedEntryId(highlight.recordId)
+                    setViewMode('changes')
+                  }}
+                >
+                  <span>{formatImpactLabel(highlight.impact)}</span>
+                  <strong>{highlight.title}</strong>
+                  <p>{highlight.quote}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="analysis-panel">
+            <div className="panel-title">
+              <Braces aria-hidden="true" />
+              <h2>Document mix</h2>
+            </div>
+            <MetricBars items={breakdowns.byDocType} total={entries.length} />
+          </div>
+
+          <div className="analysis-panel">
+            <div className="panel-title">
+              <ShieldCheck aria-hidden="true" />
+              <h2>Impact mix</h2>
+            </div>
+            <MetricBars items={breakdowns.byImpact} total={entries.length} />
+          </div>
+
+          <div className="analysis-panel">
+            <div className="panel-title">
+              <Radio aria-hidden="true" />
+              <h2>Contractor coverage</h2>
+            </div>
+            <MetricBars items={breakdowns.topContractors} total={dataset.stats.local} />
+          </div>
+
+          <div className="analysis-panel">
+            <div className="panel-title">
+              <Filter aria-hidden="true" />
+              <h2>Detected themes</h2>
+            </div>
+            <MetricBars items={breakdowns.topTags} total={entries.length} />
+          </div>
+        </section>
+      ) : null}
+
+      {viewMode === 'changes' ? (
+        <section className="workbench">
+          <div className="change-list" aria-label="Coverage changes">
+            <div className="list-header">
+              <span>{filteredEntries.length} visible</span>
+              <span>{entries.length} total</span>
+            </div>
+            {filteredEntries.map((entry) => (
+              <button
+                key={entry.recordId}
+                type="button"
+                className={`change-row impact-${entry.impact} ${
+                  selectedEntry?.recordId === entry.recordId ? 'selected' : ''
+                }`}
+                onClick={() => setSelectedEntryId(entry.recordId)}
+              >
+                <span className="change-id">{entry.displayId}</span>
+                <span className="change-body">
+                  <strong>{entry.title}</strong>
+                  <span>{entry.highlight}</span>
+                </span>
+                <span className="change-meta">{formatImpactLabel(entry.impact)}</span>
+              </button>
+            ))}
+          </div>
+
+          {selectedEntry ? (
+            <aside className={`detail-panel impact-${selectedEntry.impact}`} aria-label="Selected change detail">
+              <div className="detail-top">
+                <div>
+                  <p className="eyebrow">{selectedEntry.displayId}</p>
+                  <h2>{selectedEntry.title}</h2>
+                </div>
+                <button type="button" className="icon-button" onClick={() => setSelectedEntryId('')}>
+                  <X aria-hidden="true" />
+                  <span className="sr-only">Clear selected change</span>
+                </button>
+              </div>
+              <div className="pill-row">
+                <span className={`impact-pill impact-${selectedEntry.impact}`}>
+                  {formatImpactLabel(selectedEntry.impact)}
+                </span>
+                <span className="quiet-pill">{selectedEntry.docType}</span>
+                <span className="quiet-pill">{formatSourceLabel(selectedEntry.source)}</span>
+              </div>
+              <dl className="detail-facts">
+                <div>
+                  <dt>Updated</dt>
+                  <dd>{formatDateLabel(selectedEntry.updatedOn)}</dd>
+                </div>
+                <div>
+                  <dt>Effective</dt>
+                  <dd>{formatDateLabel(selectedEntry.effectiveDate)}</dd>
+                </div>
+                <div>
+                  <dt>Version</dt>
+                  <dd>{selectedEntry.version}</dd>
+                </div>
+              </dl>
+              {selectedEntry.contractorName ? <p className="contractor-line">{selectedEntry.contractorName}</p> : null}
+              <p className="detail-summary">{selectedEntry.summary}</p>
+              <p>{selectedEntry.narrative}</p>
+              <div className="tag-row">
+                {selectedEntry.tags.map((tag) => (
+                  <span key={`${selectedEntry.recordId}-${tag}`}>{tag}</span>
+                ))}
+              </div>
+              <div className="source-note">
+                <strong>Official revision text</strong>
+                <p>{selectedEntry.changedText[0] ?? selectedEntry.reasons[0] ?? selectedEntry.highlight}</p>
+              </div>
+              <div className="detail-actions">
+                <a href={selectedEntry.detailUrl} target="_blank" rel="noreferrer">
+                  <ExternalLink aria-hidden="true" />
+                  Open CMS
+                </a>
+                <button
+                  type="button"
+                  onClick={() =>
+                    void copyText(
+                      selectedEntry.recordId,
+                      `${selectedEntry.displayId}: ${selectedEntry.title}\n${selectedEntry.summary}\n${selectedEntry.detailUrl}`,
+                    )
+                  }
+                >
+                  <Clipboard aria-hidden="true" />
+                  {copied === selectedEntry.recordId ? 'Copied' : 'Copy'}
+                </button>
+              </div>
+            </aside>
+          ) : null}
+        </section>
+      ) : null}
+
+      {viewMode === 'brief' ? (
+        <section className="brief-view">
+          <article>
+            <div className="panel-title">
+              <ListChecks aria-hidden="true" />
+              <h2>Forwardable brief</h2>
+            </div>
+            <p>{dataset.brief.subtitle}</p>
+            <div className="brief-actions">
+              <a href={`${import.meta.env.BASE_URL}briefs/latest.md`} target="_blank" rel="noreferrer">
+                <Download aria-hidden="true" />
+                Markdown
+              </a>
+              <a href={`${import.meta.env.BASE_URL}briefs/latest.html`} target="_blank" rel="noreferrer">
+                <ArrowUpRight aria-hidden="true" />
+                HTML
+              </a>
+            </div>
+          </article>
+          <article>
+            <h3>High-impact moves</h3>
+            <ul className="dense-list">
+              {highImpactMoves.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
-          </aside>
-        ) : null}
+          </article>
+          <article>
+            <h3>Quiet corrections</h3>
+            <ul className="dense-list">
+              {quietCorrections.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
+        </section>
+      ) : null}
 
-        <div className="wall-grid">
-          {filteredEntries.map((entry) => (
-            <article key={entry.recordId} className={`wall-card impact-${entry.impact}`}>
-              <div className="wall-card-top">
-                <div className="pill-row">
-                  <span className={`impact-pill impact-${entry.impact}`}>
-                    {formatImpactLabel(entry.impact)}
-                  </span>
-                  <span className="quiet-pill">{entry.docType}</span>
-                  <span className="quiet-pill">{formatSourceLabel(entry.source)}</span>
-                </div>
-                <span className="stamp">{entry.displayId}</span>
-              </div>
-
-              <h3>{entry.title}</h3>
-              <p className="meta-line">
-                {entry.contractorName ? `${entry.contractorName} · ` : ''}
-                Updated {formatDateLabel(entry.updatedOn)}
-                {entry.effectiveDate ? ` · Effective ${formatDateLabel(entry.effectiveDate)}` : ''}
-              </p>
-
-              <p className="summary">{entry.summary}</p>
-              <p className="narrative">{entry.narrative}</p>
-
-              <ul className="tag-row">
-                {entry.tags.map((tag) => (
-                  <li key={`${entry.recordId}-${tag}`}>{tag}</li>
-                ))}
-              </ul>
-
-              {entry.reasons.length > 0 ? (
-                <blockquote>{entry.reasons[0]}</blockquote>
-              ) : (
-                <blockquote>{entry.highlight}</blockquote>
-              )}
-
-              <div className="wall-footer">
-                <a href={entry.detailUrl} target="_blank" rel="noreferrer">
-                  Open CMS detail
-                </a>
-                <span>{formatStamp(entry.updatedSort)}</span>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      {viewMode === 'feed' ? (
+        <section className="feed-view">
+          <article className="feed-card">
+            <FileJson aria-hidden="true" />
+            <h2>JSON dataset</h2>
+            <p>Full static dataset with highlights, stats, brief sections, and entries.</p>
+            <a href={`${import.meta.env.BASE_URL}data/latest.json`} target="_blank" rel="noreferrer">
+              Open latest.json
+            </a>
+          </article>
+          <article className="feed-card">
+            <Braces aria-hidden="true" />
+            <h2>Flat feed</h2>
+            <p>Smaller array for downstream scripts and lightweight integrations.</p>
+            <a href={`${import.meta.env.BASE_URL}data/feed.json`} target="_blank" rel="noreferrer">
+              Open feed.json
+            </a>
+          </article>
+          <article className="feed-card">
+            <Download aria-hidden="true" />
+            <h2>CSV export</h2>
+            <p>Spreadsheet-friendly export for review queues and contractor slices.</p>
+            <a href={`${import.meta.env.BASE_URL}data/feed.csv`} target="_blank" rel="noreferrer">
+              Download CSV
+            </a>
+          </article>
+          <article className="feed-card">
+            <Rss aria-hidden="true" />
+            <h2>RSS</h2>
+            <p>Subscribe to generated policy updates without a paid service.</p>
+            <a href={`${import.meta.env.BASE_URL}rss.xml`} target="_blank" rel="noreferrer">
+              Open RSS
+            </a>
+          </article>
+        </section>
+      ) : null}
     </main>
+  )
+}
+
+function MetricBars({ items, total }: { items: Array<{ label: string; count: number }>; total: number }) {
+  return (
+    <div className="metric-bars">
+      {items.map((item) => (
+        <div key={item.label} className="metric-row">
+          <div>
+            <span>{item.label}</span>
+            <strong>{item.count}</strong>
+          </div>
+          <progress value={item.count} max={Math.max(total, 1)} />
+        </div>
+      ))}
+    </div>
   )
 }
 

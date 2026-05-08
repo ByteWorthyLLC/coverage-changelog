@@ -1,26 +1,35 @@
 :root {
-  --paper: #f7f2e8;
-  --paper-deep: #efe4d6;
-  --panel: rgba(255, 251, 245, 0.92);
-  --ink: #173741;
-  --muted: #4c676f;
-  --muted-strong: #35555e;
-  --accent: #8b461c;
-  --accent-soft: #b87235;
-  --teal: #226c6e;
-  --line: rgba(20, 55, 64, 0.14);
-  --shadow: 0 18px 60px rgba(62, 51, 35, 0.12);
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-soft: #eef4f2;
+  --surface-blue: #eef3fb;
+  --ink: #17212b;
+  --muted: #5b6673;
+  --muted-strong: #394654;
+  --line: #d9e0e7;
+  --line-strong: #c1ccd6;
+  --green: #18705b;
+  --green-soft: #dff1eb;
+  --red: #b0332c;
+  --red-soft: #f7e4e1;
+  --amber: #94621b;
+  --amber-soft: #f5ead6;
+  --blue: #285f9e;
+  --blue-soft: #e4eef9;
+  --violet: #6750a4;
+  --violet-soft: #ebe7f6;
+  --shadow: 0 12px 34px rgba(29, 41, 57, 0.08);
   --sans: 'IBM Plex Sans', sans-serif;
-  --heading: 'Newsreader', serif;
   --mono: 'IBM Plex Mono', monospace;
   font-family: var(--sans);
-  font-size: 17px;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.5;
   color: var(--ink);
   background:
-    radial-gradient(circle at top left, rgba(184, 114, 53, 0.16), transparent 20%),
-    radial-gradient(circle at top right, rgba(34, 108, 110, 0.12), transparent 18%),
-    linear-gradient(180deg, #fbf8f3, #f2eadf 70%);
+    linear-gradient(rgba(23, 33, 43, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 33, 43, 0.035) 1px, transparent 1px),
+    var(--bg);
+  background-size: 32px 32px, 32px 32px, auto;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -39,19 +48,16 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  color: var(--ink);
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(20, 55, 64, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(20, 55, 64, 0.035) 1px, transparent 1px);
-  background-size: 100% 38px, 38px 100%;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.16), transparent 88%);
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 a {
@@ -64,48 +70,42 @@ a {
 
 h1,
 h2,
-h3 {
-  margin: 0;
-  color: var(--ink);
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-}
-
-h1 {
-  font-size: clamp(3rem, 7vw, 5.6rem);
-  line-height: 0.94;
-}
-
-h2 {
-  font-size: clamp(1.6rem, 3.2vw, 2.5rem);
-  line-height: 1.02;
-}
-
-h3 {
-  font-family: var(--sans);
-  font-size: 1.15rem;
-  line-height: 1.25;
-}
-
+h3,
 p {
   margin: 0;
 }
 
-::selection {
-  background: rgba(34, 108, 110, 0.18);
+h1,
+h2,
+h3 {
+  color: var(--ink);
+  letter-spacing: 0;
 }
 
-@media (max-width: 860px) {
-  :root {
-    font-size: 16px;
-  }
+h1 {
+  font-size: 2rem;
+  line-height: 1.06;
+  font-weight: 700;
+}
 
-  h1 {
-    line-height: 0.98;
-  }
+h2 {
+  font-size: 1.05rem;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 0.95rem;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+svg {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+}
+
+::selection {
+  background: rgba(40, 95, 158, 0.18);
 }

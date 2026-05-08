@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://byteworthyllc.github.io/coverage-changelog/sitemap.xml
